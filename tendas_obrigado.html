@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pedido recebido | 3LM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!--
+  ════════════════════════════════════════════════════════════════
+  CONVERSÃO — Adicionar aqui os pixels de conversão
+  ════════════════════════════════════════════════════════════════
+
+  GOOGLE ADS — Evento de conversão:
+  ────────────────────────────────────────────────────────────────
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-XXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-XXXXXXXXX');
+    gtag('event', 'conversion', {'send_to': 'AW-XXXXXXXXX/XXXXXXXXXXXXXXXX'});
+  </script>
+
+  META (FACEBOOK) PIXEL — Evento Lead:
+  ────────────────────────────────────────────────────────────────
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', 'XXXXXXXXXXXXXXXX');
+    fbq('track', 'Lead');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXXX&ev=Lead&noscript=1"/></noscript>
+
+  GOOGLE TAG MANAGER (alternativa):
+  ────────────────────────────────────────────────────────────────
+  Configurar trigger: Page URL contém "tendas_obrigado"
+  Evento: Lead / Purchase / Contact conforme a conta
+
+  ════════════════════════════════════════════════════════════════
+-->
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;background:#fff;color:#111827;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+
+.nav{background:#fff;border-bottom:1px solid #E5E7EB;padding:0 20px;height:60px;display:flex;align-items:center}
+.nav-in{max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:1.5rem;font-weight:900;letter-spacing:-1px;color:#911712}
+.nav-back{font-size:.85rem;color:#6B7280;display:flex;align-items:center;gap:6px;transition:color .18s}
+.nav-back:hover{color:#111827}
+.nav-back svg{width:16px;height:16px}
+
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 20px}
+.card{max-width:520px;width:100%;text-align:center}
+
+.check-ring{width:96px;height:96px;border-radius:50%;background:#ECFDF5;border:2px solid #BBF7D0;display:flex;align-items:center;justify-content:center;margin:0 auto 32px}
+.check-ring svg{width:48px;height:48px;color:#16A34A}
+
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#911712;background:#FEF2F2;border:1px solid #FECACA;padding:3px 10px;border-radius:4px;margin-bottom:16px}
+
+h1{font-size:2.4rem;font-weight:900;letter-spacing:-1.5px;line-height:1.05;color:#111827;margin-bottom:16px}
+
+.sub{font-size:1rem;color:#6B7280;line-height:1.75;margin-bottom:36px;max-width:420px;margin-left:auto;margin-right:auto}
+
+.steps{display:flex;flex-direction:column;gap:12px;background:#F5F5F4;border-radius:12px;padding:24px;margin-bottom:36px;text-align:left}
+.step{display:flex;align-items:flex-start;gap:14px;font-size:.875rem;color:#374151}
+.step-num{width:28px;height:28px;border-radius:50%;background:#911712;color:#fff;font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-body strong{display:block;font-weight:700;color:#111827;margin-bottom:2px}
+.step-body span{color:#6B7280;font-size:.82rem}
+
+.cta-home{display:inline-flex;align-items:center;gap:8px;background:#911712;color:#fff;padding:14px 32px;border-radius:6px;font-size:.95rem;font-weight:700;transition:background .18s;margin-bottom:16px}
+.cta-home:hover{background:#720E0D}
+.cta-home svg{width:18px;height:18px}
+
+.contact-row{font-size:.82rem;color:#9CA3AF;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.contact-row a{color:#6B7280;font-weight:600;transition:color .18s}
+.contact-row a:hover{color:#911712}
+.contact-sep{color:#D1D5DB}
+
+footer{padding:24px 20px;border-top:1px solid #E5E7EB;text-align:center;font-size:.78rem;color:#9CA3AF}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="https://3lm.pt" class="nav-logo">3LM</a>
+    <a href="https://3lm.pt" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      Voltar ao site
+    </a>
+  </div>
+</nav>
+
+<main class="main">
+  <div class="card">
+    <div class="check-ring">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    </div>
+
+    <div class="tag">Pedido recebido</div>
+    <h1>Obrigado!</h1>
+    <p class="sub">O seu pedido de orçamento foi recebido. A equipa 3LM vai entrar em contacto em menos de 24 horas úteis.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>Análise do pedido</strong>
+          <span>A 3LM analisa as especificações e prepara o orçamento.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Contacto em 24h úteis</strong>
+          <span>Recebe o orçamento por email ou telefone.</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Produção em 7-10 dias úteis</strong>
+          <span>Após confirmação, a tenda fica pronta e é enviada.</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="https://3lm.pt" class="cta-home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Visitar 3lm.pt
+    </a>
+
+    <div class="contact-row">
+      <span>Precisa de falar agora?</span>
+      <a href="tel:+351239983322">+351 239 98 33 22</a>
+      <span class="contact-sep">·</span>
+      <a href="https://wa.me/351917251465">WhatsApp</a>
+    </div>
+  </div>
+</main>
+
+<footer>© 2026 3LM Publicidade e Imagem, Unip. Lda.</footer>
+
+</body>
+</html>

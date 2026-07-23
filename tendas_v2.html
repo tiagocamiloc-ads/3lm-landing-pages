@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tenda de Arco Personalizada | 3LM</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fefefe;--surface:#f5defa;--border:#d4b8e8;--text:#181e5a;
+  --muted:#667d87;--red:#b02cce;--red-dk:#8a1fa5;--red-lt:#f5defa;
+  --red-bd:#e2b8f5;--gold:#b02cce;--nav-h:64px;--max:1200px;--r:999px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,-apple-system,sans-serif;color:var(--text);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;background:none;font:inherit}
+ul{list-style:none}
+
+.urgency{background:var(--red);color:#fff;text-align:center;font-size:.8rem;font-weight:500;padding:8px 16px;letter-spacing:.02em}
+.urgency a{color:#fff;text-decoration:underline;margin-left:8px}
+
+.nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;height:var(--nav-h)}
+.nav-in{max-width:var(--max);margin:0 auto;padding:0 20px;height:100%;display:flex;align-items:center;gap:28px}
+.nav-logo{font-family:'Syne',sans-serif;font-size:1.5rem;letter-spacing:.08em;color:var(--red);flex-shrink:0}
+.nav-links{display:flex;gap:22px;font-size:.85rem;font-weight:500;color:var(--muted)}
+.nav-links a:hover{color:var(--text)}
+.nav-space{flex:1}
+.nav-support{font-size:.75rem;color:var(--muted);text-align:right;line-height:1.4}
+.nav-cta{background:var(--red);color:#fff;padding:9px 18px;border-radius:var(--r);font-size:.85rem;font-weight:700;flex-shrink:0;transition:background .18s}
+.nav-cta:hover{background:var(--red-dk)}
+
+/* REVIEWS */
+.rcar{background:var(--surface);border-bottom:1px solid var(--border);padding:32px 20px}
+.rcar-in{max-width:var(--max);margin:0 auto}
+.rcar-top{display:flex;align-items:center;gap:16px;margin-bottom:24px}
+.rcar-score{font-family:'Syne',sans-serif;font-size:2.8rem;line-height:1}
+.rcar-stars{color:var(--gold);font-size:1rem;letter-spacing:1px}
+.rcar-count{font-size:.8rem;color:var(--muted);margin-top:2px}
+.rcar-line{font-size:.8rem;font-weight:600;margin-top:4px}
+.rc-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px}
+.rc-stars{color:var(--gold);font-size:.8rem;letter-spacing:1px;margin-bottom:8px}
+.rc-text{font-size:.875rem;line-height:1.65;margin-bottom:14px}
+.rc-author{display:flex;align-items:center;gap:10px}
+.rc-av{width:34px;height:34px;border-radius:50%;background:var(--red-lt);color:var(--red);font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rc-name{font-size:.82rem;font-weight:700}
+.rc-meta{font-size:.75rem;color:var(--muted)}
+.rc-badge{margin-left:auto;font-size:.7rem;font-weight:600;color:#059669;background:#ECFDF5;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.rcar-scroll{overflow:hidden;margin:0 -20px;padding-bottom:4px;position:relative}
+.rcar-scroll::before,.rcar-scroll::after{content:'';position:absolute;top:0;bottom:0;width:60px;z-index:2;pointer-events:none}
+.rcar-scroll::before{left:0;background:linear-gradient(to right,var(--surface),transparent)}
+.rcar-scroll::after{right:0;background:linear-gradient(to left,var(--surface),transparent)}
+.rcar-track{display:flex;gap:16px;padding:0 20px;width:max-content;animation:rcar-marq 48s linear infinite}
+.rcar-track:hover{animation-play-state:paused}
+.rcar-track .rc-card{width:300px;flex-shrink:0}
+@keyframes rcar-marq{from{transform:translateX(0)}to{transform:translateX(calc(-7*(300px + 16px)))}}
+@media(prefers-reduced-motion:reduce){.rcar-track{animation:none;overflow-x:auto}}
+
+/* PRODUCT */
+.product{max-width:var(--max);margin:0 auto;padding:48px 20px;display:grid;grid-template-columns:55% 1fr;gap:52px;align-items:start}
+.gallery{position:sticky;top:calc(var(--nav-h) + 16px)}
+.gal-main{border-radius:12px;overflow:hidden;background:var(--surface);aspect-ratio:4/3;margin-bottom:10px;border:1px solid var(--border)}
+.gal-main img{width:100%;height:100%;object-fit:cover}
+.gal-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gal-thumb{border-radius:8px;overflow:hidden;background:var(--surface);aspect-ratio:1;cursor:pointer;border:2px solid transparent;transition:border-color .18s}
+.gal-thumb.active,.gal-thumb:hover{border-color:var(--red)}
+.gal-thumb img{width:100%;height:100%;object-fit:cover}
+.pdp-eye{font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red);background:var(--red-lt);border:1px solid var(--red-bd);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:12px}
+.pdp h1{font-family:'Syne',sans-serif;font-size:2.2rem;line-height:1.1;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px}
+.pdp-rat{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.pdp-stars{color:var(--gold);font-size:.95rem;letter-spacing:1.5px}
+.pdp-rscore{font-weight:700;font-size:.9rem}
+.pdp-rlink{font-size:.85rem;color:var(--muted);text-decoration:underline;cursor:pointer}
+.pdp-price{margin-bottom:20px}
+.pdp-pfrom{font-size:.82rem;color:var(--muted);display:block}
+.pdp-pval{font-size:2rem;font-weight:700}
+.pdp-pvat{font-size:.85rem;color:var(--muted)}
+.pdp-bullets{display:flex;flex-direction:column;gap:9px;margin-bottom:24px}
+.pdp-bullets li{font-size:.9rem;display:flex;align-items:flex-start;gap:10px}
+.pdp-bullets li::before{content:'';width:18px;height:18px;min-width:18px;border-radius:50%;background:var(--red);margin-top:2px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='white'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E");background-size:10px;background-repeat:no-repeat;background-position:center}
+.pdp-fab{margin-bottom:20px}
+.pdp-fab-lbl{font-size:.85rem;font-weight:600;margin-bottom:10px;display:block}
+.pdp-fab-opts{display:flex;gap:10px}
+.fab-btn{padding:10px 14px;border-radius:var(--r);border:1.5px solid var(--border);font-size:.82rem;font-weight:500;color:var(--muted);background:#fff;transition:all .18s;text-align:left;cursor:pointer;flex:1}
+.fab-btn.active{border-color:var(--red);color:var(--red);background:var(--red-lt);font-weight:700}
+.fab-btn:hover:not(.active){border-color:#9CA3AF;color:var(--text)}
+.fab-btn-name{font-weight:700;display:block;font-size:.85rem}
+.fab-btn-desc{font-size:.72rem;opacity:.7;display:block;margin-top:2px;line-height:1.4}
+.pdp-sz{margin-bottom:24px}
+.pdp-sz-lbl{font-size:.85rem;font-weight:600;margin-bottom:10px;display:block}
+.pdp-sz-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.pdp-sz-tab{padding:8px 16px;border-radius:var(--r);border:1.5px solid var(--border);font-size:.82rem;font-weight:500;color:var(--muted);background:#fff;transition:all .18s}
+.pdp-sz-tab.active{border-color:var(--red);color:var(--red);background:var(--red-lt);font-weight:700}
+.pdp-sz-tab:hover:not(.active){border-color:#9CA3AF;color:var(--text)}
+.pdp-sz-panel{background:var(--surface);border-radius:10px;padding:14px 16px;border:1px solid var(--border)}
+.pdp-sz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.pdp-sz-name{font-weight:700;font-size:.9rem}
+.pdp-sz-price{font-weight:700;color:var(--red);font-size:.9rem}
+.pdp-sz-desc{font-size:.8rem;color:var(--muted)}
+.pdp-cta{display:block;width:100%;padding:15px;text-align:center;background:var(--red);color:#fff;border-radius:var(--r);font-size:1rem;font-weight:700;letter-spacing:.02em;margin-bottom:10px;transition:background .18s}
+.pdp-cta:hover{background:var(--red-dk)}
+.pdp-cta2{display:block;width:100%;padding:13px;text-align:center;background:#fff;color:var(--red);border:1.5px solid var(--red);border-radius:var(--r);font-size:.9rem;font-weight:600;margin-bottom:24px;transition:all .18s}
+.pdp-cta2:hover{background:var(--red-lt)}
+.pdp-trust{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+.pdp-ti{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:8px;padding:10px 12px;border:1px solid var(--border)}
+.pdp-ti-ico{font-size:1.3rem;flex-shrink:0}
+.pdp-ti-txt{font-size:.78rem;color:var(--muted);line-height:1.3}
+.pdp-ti-txt strong{display:block;color:var(--text);font-size:.82rem}
+.pdp-guar{background:var(--red-lt);border:1px solid var(--red-bd);border-radius:8px;padding:12px 16px;font-size:.82rem;color:var(--text);display:flex;align-items:center;gap:10px}
+.pdp-guar svg{width:20px;height:20px;color:var(--red);flex-shrink:0}
+
+/* TABS */
+.pdp-tabs{max-width:var(--max);margin:0 auto;padding:0 20px 48px}
+.pdp-tab-nav{display:flex;border-bottom:2px solid var(--border);margin-bottom:32px}
+.pdp-tab-btn{padding:12px 20px;font-size:.9rem;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .18s;cursor:pointer;background:none;font-family:inherit}
+.pdp-tab-btn.active{color:var(--red);border-bottom-color:var(--red)}
+.pdp-tab-c{display:none}
+.pdp-tab-c.active{display:block}
+.pdp-desc{max-width:700px;color:var(--muted);font-size:.95rem;line-height:1.8}
+.pdp-desc p+p{margin-top:16px}
+.pdp-desc h3{font-family:'Syne',sans-serif;font-size:1.2rem;text-transform:uppercase;letter-spacing:.03em;color:var(--text);margin:24px 0 12px}
+.inc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.inc-item{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+.inc-img{height:160px;overflow:hidden;background:var(--surface)}
+.inc-img img{width:100%;height:100%;object-fit:cover}
+.inc-body{padding:14px}
+.inc-body h4{font-weight:700;font-size:.9rem;margin-bottom:4px}
+.inc-body p{font-size:.8rem;color:var(--muted);line-height:1.5}
+.del-row{display:flex;gap:16px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--border);font-size:.875rem}
+.del-row:last-child{border-bottom:none}
+.del-ico{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.del-body h4{font-weight:700;margin-bottom:4px}
+.del-body p{color:var(--muted);line-height:1.6}
+
+/* SHARED */
+.s-eye{font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:8px}
+.s-title{font-family:'Syne',sans-serif;font-size:2rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;line-height:1.1}
+.s-sub{color:var(--muted);font-size:.95rem;max-width:520px}
+.s-sub.cx{margin:0 auto}
+.btn-red{display:inline-block;background:var(--red);color:#fff;padding:13px 28px;border-radius:var(--r);font-weight:700;font-size:.9rem;transition:background .18s}
+.btn-red:hover{background:var(--red-dk)}
+
+/* VIDEO */
+.video-sec{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 20px}
+.video-in{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.video-wrap{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#111;border:1px solid var(--border);display:block}
+.video-wrap img{width:100%;height:100%;object-fit:cover;opacity:.7}
+.video-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.video-play-btn{width:72px;height:72px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s}
+.video-wrap:hover .video-play-btn{background:var(--red-dk);transform:scale(1.08)}
+.video-play-btn svg{width:28px;height:28px;color:#fff;margin-left:4px}
+.video-content h2{font-family:'Syne',sans-serif;font-size:1.75rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:16px;line-height:1.15}
+.video-content p{color:var(--muted);font-size:.95rem;line-height:1.75;margin-bottom:20px}
+
+/* BENEFITS */
+.benefits{padding:64px 20px}
+.ben-in{max-width:var(--max);margin:0 auto}
+.ben-hdr{text-align:center;margin-bottom:48px}
+.ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ben-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 24px}
+.ben-ico{width:48px;height:48px;border-radius:10px;background:var(--red-lt);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.ben-ico svg{width:24px;height:24px;color:var(--red)}
+.ben-card h3{font-weight:700;font-size:.95rem;margin-bottom:8px}
+.ben-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* FEATURE HIGHLIGHT */
+.fhl{padding:64px 20px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.fhl-in{max-width:var(--max);margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.fhl-img{border-radius:16px;overflow:hidden;background:var(--surface);aspect-ratio:4/3;border:1px solid var(--border)}
+.fhl-img img{width:100%;height:100%;object-fit:cover}
+.fhl-content h2{font-family:'Syne',sans-serif;font-size:1.75rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:20px;line-height:1.15}
+.fhl-content p{color:var(--muted);font-size:.95rem;line-height:1.75;margin-bottom:20px}
+.fhl-quote{background:var(--surface);border-left:3px solid var(--red);border-radius:0 8px 8px 0;padding:14px 18px;font-style:italic;font-size:.875rem;color:var(--muted);margin-bottom:24px}
+.fhl-quote cite{display:block;font-style:normal;font-weight:600;color:var(--text);margin-top:8px;font-size:.8rem}
+
+/* TENT PICKER */
+.tent-picker{background:var(--surface);padding:64px 20px;border-top:1px solid var(--border)}
+.tp-in{max-width:var(--max);margin:0 auto}
+.tp-hdr{text-align:center;margin-bottom:40px}
+.tp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.tp-card{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow .2s,border-color .2s}
+.tp-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08);border-color:var(--red)}
+.tp-img{height:200px;overflow:hidden;background:var(--surface);display:flex;align-items:center;justify-content:center}
+.tp-img img{width:100%;height:100%;object-fit:contain;padding:12px}
+.tp-body{padding:18px}
+.tp-size{font-family:'Syne',sans-serif;font-size:1.1rem;letter-spacing:.02em;margin-bottom:6px}
+.tp-desc{font-size:.8rem;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.tp-price{font-weight:700;color:var(--red);font-size:.9rem;margin-bottom:12px}
+.tp-price-note{font-size:.72rem;color:var(--muted);font-weight:400}
+.tp-btn{display:block;text-align:center;background:var(--red);color:#fff;border-radius:var(--r);padding:10px;font-size:.82rem;font-weight:700;transition:background .18s}
+.tp-btn:hover{background:var(--red-dk)}
+
+/* PRICE TABLES */
+.price-tbl-sec{padding:64px 20px;border-top:1px solid var(--border)}
+.pt-in{max-width:var(--max);margin:0 auto}
+.pt-hdr{margin-bottom:40px}
+.price-tbl{width:100%;border-collapse:collapse;font-size:.875rem;margin-bottom:32px}
+.price-tbl caption{font-family:'Syne',sans-serif;font-size:1rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:12px;text-align:left;caption-side:top;padding-bottom:10px}
+.price-tbl th{background:var(--surface);padding:12px 16px;text-align:left;font-weight:700;font-size:.8rem;border:1px solid var(--border)}
+.price-tbl td{padding:12px 16px;border:1px solid var(--border);font-variant-numeric:tabular-nums}
+.price-tbl tbody tr:nth-child(even){background:var(--surface)}
+.price-tbl .col-red{color:var(--red);font-weight:700}
+.pt-note{font-size:.8rem;color:var(--muted);margin-top:-16px;margin-bottom:32px}
+
+/* HOW IT WORKS */
+.howit{background:var(--surface);padding:64px 20px;border-top:1px solid var(--border)}
+.howit-in{max-width:var(--max);margin:0 auto}
+.howit-hdr{text-align:center;margin-bottom:48px}
+.howit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
+.howit-line{position:absolute;top:24px;left:calc(12.5% + 24px);right:calc(12.5% + 24px);height:2px;background:var(--border)}
+.howit-step{text-align:center;padding:0 16px;position:relative}
+.howit-num{width:48px;height:48px;border-radius:50%;background:var(--red);color:#fff;font-family:'Syne',sans-serif;font-size:1.3rem;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;position:relative;z-index:1}
+.howit-step h3{font-weight:700;font-size:.9rem;margin-bottom:8px}
+.howit-step p{font-size:.82rem;color:var(--muted);line-height:1.6}
+.howit-proof{text-align:center;margin-top:40px;padding-top:32px;border-top:1px solid var(--border)}
+.howit-pill{display:inline-flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);padding:12px 24px;border-radius:100px;font-size:.85rem;font-weight:600}
+.howit-pill span{color:var(--gold);font-size:.9rem;letter-spacing:1px}
+
+/* CTA MID */
+.cta-mid{background:var(--red-lt);border-top:1px solid var(--red-bd);border-bottom:1px solid var(--red-bd);padding:40px 20px;text-align:center}
+.cta-mid-in{max-width:560px;margin:0 auto}
+.cta-mid h2{font-family:'Syne',sans-serif;font-size:1.5rem;text-transform:uppercase;letter-spacing:.03em;margin-bottom:8px}
+.cta-mid p{font-size:.9rem;color:var(--muted);margin-bottom:20px}
+.cta-mid-row{display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap}
+.cta-mid-proof{font-size:.82rem;color:var(--muted)}
+.cta-mid-proof span{color:var(--gold)}
+
+/* ACCESSORIES */
+.acc-sec{padding:64px 20px;border-top:1px solid var(--border)}
+.acc-in{max-width:var(--max);margin:0 auto}
+.acc-hdr{margin-bottom:40px}
+.acc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:40px}
+.acc-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;transition:box-shadow .2s}
+.acc-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.acc-img{height:180px;background:var(--surface);overflow:hidden;display:flex;align-items:center;justify-content:center}
+.acc-img img{width:100%;height:100%;object-fit:contain;padding:16px}
+.acc-body{padding:16px}
+.acc-body h3{font-weight:700;font-size:.9rem;margin-bottom:6px}
+.acc-body p{font-size:.8rem;color:var(--muted);margin-bottom:10px;line-height:1.5}
+.acc-price{font-size:.85rem;font-weight:700;color:var(--red)}
+.acc-price-note{font-size:.72rem;color:var(--muted);font-weight:400}
+.bases-row{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:32px}
+.bases-img{border-radius:8px;overflow:hidden;aspect-ratio:4/3}
+.bases-img img{width:100%;height:100%;object-fit:cover}
+.bases-info h3{font-weight:700;font-size:1rem;margin-bottom:8px}
+.bases-info p{font-size:.875rem;color:var(--muted);line-height:1.7;margin-bottom:12px}
+.bases-specs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.bases-spec{background:#fff;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-size:.78rem;color:var(--muted)}
+.bases-price{font-size:1.1rem;font-weight:700;color:var(--red)}
+.bases-price-note{font-size:.78rem;color:var(--muted);font-weight:400}
+
+/* NOTAS */
+.notas-sec{background:var(--red-lt);border-top:1px solid var(--red-bd);border-bottom:1px solid var(--red-bd);padding:40px 20px}
+.notas-in{max-width:780px;margin:0 auto}
+.notas-in h2{font-family:'Syne',sans-serif;font-size:1.1rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;color:var(--red)}
+.notas-in p{font-size:.9rem;color:var(--text);line-height:1.85}
+
+/* WHY US */
+.whyus{padding:64px 20px;border-top:1px solid var(--border)}
+.why-in{max-width:var(--max);margin:0 auto}
+.why-hdr{text-align:center;margin-bottom:48px}
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.why-card{border:1px solid var(--border);border-radius:12px;padding:28px}
+.why-card h3{font-weight:700;font-size:1rem;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.why-card h3 em{width:32px;height:32px;border-radius:50%;background:var(--red);color:#fff;font-size:.9rem;font-style:normal;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.why-card p{font-size:.875rem;color:var(--muted);line-height:1.7}
+
+/* USE CASES */
+.usecases{background:var(--surface);padding:64px 20px}
+.uc-in{max-width:var(--max);margin:0 auto}
+.uc-hdr{text-align:center;margin-bottom:48px}
+.uc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.uc-card{border-radius:12px;overflow:hidden;border:1px solid var(--border);background:#fff}
+.uc-img{height:220px;overflow:hidden}
+.uc-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.uc-card:hover .uc-img img{transform:scale(1.04)}
+.uc-body{padding:20px}
+.uc-body h3{font-weight:700;font-size:.95rem;margin-bottom:6px}
+.uc-body p{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* CROSS-SELL */
+.cs-sec{padding:64px 20px;border-top:1px solid var(--border)}
+.cs-in{max-width:var(--max);margin:0 auto}
+.cs-hdr{margin-bottom:40px}
+.cs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.cs-card{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff;transition:box-shadow .2s}
+.cs-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.cs-img{height:160px;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:2.5rem;border-bottom:1px solid var(--border)}
+.cs-body{padding:16px}
+.cs-body h3{font-weight:700;font-size:.9rem;margin-bottom:6px}
+.cs-body p{font-size:.8rem;color:var(--muted);margin-bottom:12px;line-height:1.5}
+.cs-link{display:inline-flex;align-items:center;gap:4px;font-size:.82rem;color:var(--red);font-weight:600}
+
+/* FAQ */
+.faq{background:var(--surface);padding:64px 20px;border-top:1px solid var(--border)}
+.faq-in{max-width:780px;margin:0 auto}
+.faq-hdr{text-align:center;margin-bottom:40px}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:10px;margin-bottom:10px;overflow:hidden}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px 20px;font-weight:600;font-size:.9rem;cursor:pointer;background:none;text-align:left;color:var(--text);font-family:inherit}
+.faq-ico{width:24px;height:24px;min-width:24px;border:1.5px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:var(--muted);transition:all .2s;flex-shrink:0}
+.faq-item.open .faq-ico{border-color:var(--red);color:var(--red);transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease}
+.faq-a-in{padding:0 20px 18px;color:var(--muted);font-size:.875rem;line-height:1.75}
+.faq-item.open .faq-a{max-height:400px}
+
+/* CTA FINAL */
+.ctafinal{background:var(--red);padding:80px 20px;text-align:center}
+.ctafinal h2{font-family:'Syne',sans-serif;font-size:2.2rem;text-transform:uppercase;letter-spacing:.04em;color:#fff;margin-bottom:12px;line-height:1.1}
+.ctafinal-q{font-size:.9rem;color:rgba(255,255,255,.8);max-width:480px;margin:0 auto 28px;font-style:italic}
+.ctafinal-btn{display:inline-block;background:#fff;color:var(--red);padding:15px 40px;border-radius:var(--r);font-size:1rem;font-weight:700;transition:opacity .18s}
+.ctafinal-btn:hover{opacity:.92}
+.ctafinal-proof{margin-top:20px;font-size:.8rem;color:rgba(255,255,255,.6)}
+
+/* FOOTER */
+footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
+.ft-in{max-width:var(--max);margin:0 auto}
+.ft-trust{display:flex;gap:24px;flex-wrap:wrap;padding-bottom:32px;border-bottom:1px solid rgba(255,255,255,.1);margin-bottom:40px}
+.ft-ti{display:flex;align-items:center;gap:8px;font-size:.8rem}
+.ft-ti span:first-child{font-size:1.1rem}
+.ft-cols{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px}
+.ft-logo{font-family:'Syne',sans-serif;font-size:1.75rem;color:#fff;letter-spacing:.08em;margin-bottom:12px}
+.ft-brand p{font-size:.85rem;line-height:1.7}
+.ft-col h4{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#fff;margin-bottom:16px}
+.ft-col ul{display:flex;flex-direction:column;gap:8px}
+.ft-col ul a{font-size:.85rem;color:rgba(255,255,255,.6);transition:color .18s}
+.ft-col ul a:hover{color:#fff}
+.ft-btm{border-top:1px solid rgba(255,255,255,.1);padding-top:20px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;flex-wrap:wrap;gap:8px}
+
+@media(max-width:1024px){
+  .product{grid-template-columns:1fr;gap:32px}
+  .gallery{position:static}
+  .ben-grid{grid-template-columns:repeat(2,1fr)}
+  .howit-grid{grid-template-columns:repeat(2,1fr)}
+  .howit-line{display:none}
+  .ft-cols{grid-template-columns:1fr 1fr}
+  .tp-grid{grid-template-columns:repeat(2,1fr)}
+  .video-in{grid-template-columns:1fr;gap:32px}
+  .acc-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:768px){
+  .fhl-in{grid-template-columns:1fr;gap:32px}
+  .why-grid{grid-template-columns:1fr}
+  .uc-grid{grid-template-columns:1fr}
+  .cs-grid{grid-template-columns:repeat(2,1fr)}
+  .pdp-trust{grid-template-columns:1fr}
+  .inc-grid{grid-template-columns:1fr}
+  .nav-links,.nav-support{display:none}
+  .ft-cols{grid-template-columns:1fr}
+  .bases-row{grid-template-columns:1fr}
+  .pdp-fab-opts{flex-direction:column}
+}
+@media(max-width:480px){
+  .cs-grid{grid-template-columns:1fr}
+  .s-title{font-size:1.5rem}
+  .pdp h1{font-size:1.75rem}
+  .tp-grid{grid-template-columns:1fr}
+  .acc-grid{grid-template-columns:1fr}
+}
+
+/* V2 OVERRIDES — Zyte Vibrant Dark-Hero */
+body{font-family:'Inter',system-ui,sans-serif}
+.pdp h1,.s-title,.video-content h2,.fhl-content h2,.cta-mid h2,.ctafinal h2,.notas-in h2,.rcar-score,.nav-logo,.ft-logo,.tp-size,.price-tbl caption,.howit-num{font-family:'Syne',sans-serif;letter-spacing:-2px}
+.nav-logo{letter-spacing:.05em}
+.urgency{background:#181e5a;color:#fefefe}
+.urgency a{color:#e2b8f5}
+.nav{background:#fefefe;border-bottom:1px solid #d4b8e8}
+.nav-logo{color:#b02cce}
+.nav-cta{border-radius:999px}
+.btn-red,.tp-btn,.pdp-cta,.ctafinal-btn{border-radius:999px}
+.pdp-cta2{border-radius:999px}
+.fab-btn{border-radius:999px}
+.pdp-sz-tab{border-radius:999px}
+.pdp-eye{border-radius:999px}
+.ben-card,.rc-card,.why-card,.acc-card,.tp-card,.uc-card,.cs-card,.faq-item,.inc-item{border-radius:16px}
+.gal-thumb{border-radius:12px}
+.pdp-ti{border-radius:16px}
+.bases-row{border-radius:16px}
+.howit-num{border-radius:50%;background:#b02cce}
+.why-card h3 em{background:#b02cce;border-radius:50%}
+.ben-ico{background:#f5defa;border-radius:16px}
+.ben-ico svg{color:#b02cce}
+.rcar-scroll::before{background:linear-gradient(to right,var(--surface),transparent)}
+.rcar-scroll::after{background:linear-gradient(to left,var(--surface),transparent)}
+.pdp h1{font-size:2.4rem}
+.s-title{font-size:2.2rem}
+.ctafinal{background:linear-gradient(135deg,#8a1fa5 0%,#b02cce 100%)}
+.ctafinal-btn{color:#b02cce}
+.howit-proof .howit-pill{border-radius:999px}
+.rc-badge{border-radius:999px}
+.bases-spec{border-radius:999px}
+.fhl-quote{border-left-color:#b02cce}
+
+</style>
+</head>
+<body>
+
+<div class="urgency">Encomendas abertas para setembro. Prazo de produção: 7-10 dias úteis após aprovação.<a href="#orcamento">Pedir orçamento</a></div>
+
+<nav class="nav">
+  <div class="nav-in">
+    <a href="https://3lm.pt" class="nav-logo">3LM</a>
+    <div class="nav-links">
+      <a href="https://3lm.pt/pt/tendas-arcos-personalizados">Tendas</a>
+      <a href="https://3lm.pt/pt/bandeiras-publicitarias-impressao-incluida">Bandeirolas</a>
+      <a href="https://3lm.pt/pt/solucoes-modulares-para-feiras-e-eventos">Stands</a>
+      <a href="https://3lm.pt/pt/balcoes-e-mesas">Balcões</a>
+    </div>
+    <div class="nav-space"></div>
+    <div class="nav-support">Seg-Sex 9h-13h / 14h-18h &nbsp;·&nbsp; 3lm@3lm.pt</div>
+    <a href="#orcamento" class="nav-cta">Pedir Orçamento</a>
+  </div>
+</nav>
+
+<!-- PRODUCT -->
+<div class="product">
+  <div class="gallery">
+    <div class="gal-main"><img id="mainImg" src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/a4359d11-8df0-4eba-a573-8d8002d9d38f.jpeg" alt="Tenda de arco personalizada 3LM"></div>
+    <div class="gal-thumbs">
+      <div class="gal-thumb active" onclick="switchImg(this,'https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/a4359d11-8df0-4eba-a573-8d8002d9d38f.jpeg')"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/a4359d11-8df0-4eba-a573-8d8002d9d38f.jpeg" alt=""></div>
+      <div class="gal-thumb" onclick="switchImg(this,'https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/4ff1c2f2-3465-420c-81c0-1a9616dd3d9b.jpeg')"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/4ff1c2f2-3465-420c-81c0-1a9616dd3d9b.jpeg" alt=""></div>
+      <div class="gal-thumb" onclick="switchImg(this,'https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/2876b499-caaf-452f-965e-9ae58697f762.jpeg')"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/2876b499-caaf-452f-965e-9ae58697f762.jpeg" alt=""></div>
+      <div class="gal-thumb" onclick="switchImg(this,'https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/9f08ed72-6834-4da4-8bcb-8201080f2874.jpeg')"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/9f08ed72-6834-4da4-8bcb-8201080f2874.jpeg" alt=""></div>
+    </div>
+  </div>
+
+  <div class="pdp">
+    <div class="pdp-eye">Tendas de Arco Personalizadas</div>
+    <h1>Tenda de Arco 3LM</h1>
+    <div class="pdp-rat">
+      <span class="pdp-stars">★★★★☆</span>
+      <span class="pdp-rscore">4,0</span>
+      <a class="pdp-rlink" href="#reviews">34 avaliações Google</a>
+    </div>
+    <div class="pdp-price">
+      <span class="pdp-pfrom">A partir de</span>
+      <span class="pdp-pval" id="pdpPrice">257€</span><span class="pdp-pvat"> + IVA</span>
+    </div>
+    <ul class="pdp-bullets">
+      <li>Impressão full-color incluída no preço</li>
+      <li>Tecido resistente à água, ao ar e à cor, lavável</li>
+      <li>Montagem rápida, sem ferramentas necessárias</li>
+    </ul>
+
+    <div class="pdp-fab">
+      <span class="pdp-fab-lbl">Tecido:</span>
+      <div class="pdp-fab-opts">
+        <button class="fab-btn active" onclick="selectFabric('banner',this)">
+          <span class="fab-btn-name">Banner 115g</span>
+          <span class="fab-btn-desc">Leve e compacto, para interiores e eventos pontuais</span>
+        </button>
+        <button class="fab-btn" onclick="selectFabric('imperm',this)">
+          <span class="fab-btn-name">Impermeável 180g</span>
+          <span class="fab-btn-desc">Resistência extra à chuva, para eventos ao ar livre</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="pdp-sz">
+      <span class="pdp-sz-lbl">Tamanho:</span>
+      <div class="pdp-sz-tabs">
+        <button class="pdp-sz-tab active" onclick="updateSize('s1',this)">1,5 × 1,5 m</button>
+        <button class="pdp-sz-tab" onclick="updateSize('s2',this)">3 × 3 m</button>
+        <button class="pdp-sz-tab" onclick="updateSize('s3',this)">3 × 4,5 m</button>
+        <button class="pdp-sz-tab" onclick="updateSize('s4',this)">3 × 6 m</button>
+      </div>
+      <div class="pdp-sz-panel">
+        <div class="pdp-sz-top">
+          <span class="pdp-sz-name" id="szName">Tenda 1,5 × 1,5 m</span>
+          <span class="pdp-sz-price" id="szPrice">257€ + IVA</span>
+        </div>
+        <p class="pdp-sz-desc" id="szDesc">Compacta, fácil colocação em espaços reduzidos</p>
+      </div>
+    </div>
+
+    <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="pdp-cta" id="orcamento">Pedir Orçamento Gratuito</a>
+    <a href="#addons" class="pdp-cta2">Ver acessórios disponíveis</a>
+
+    <div class="pdp-trust">
+      <div class="pdp-ti"><div class="pdp-ti-ico">🖨️</div><div class="pdp-ti-txt"><strong>Impressão incluída</strong>full-color, sem limite de cores</div></div>
+      <div class="pdp-ti"><div class="pdp-ti-ico">🚀</div><div class="pdp-ti-txt"><strong>Produção 7-10 dias</strong>úteis após aprovação</div></div>
+      <div class="pdp-ti"><div class="pdp-ti-ico">💧</div><div class="pdp-ti-txt"><strong>Tecido resistente</strong>à água, ao ar e à cor</div></div>
+      <div class="pdp-ti"><div class="pdp-ti-ico">🇵🇹</div><div class="pdp-ti-txt"><strong>Feito em Portugal</strong>entrega em toda a Península</div></div>
+    </div>
+    <div class="pdp-guar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+      <span>Se a impressão não corresponder ao design aprovado, refazemos sem qualquer custo.</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT TABS -->
+<div class="pdp-tabs">
+  <div class="pdp-tab-nav">
+    <button class="pdp-tab-btn active" onclick="switchTab('desc',this)">Descrição</button>
+    <button class="pdp-tab-btn" onclick="switchTab('inc',this)">O que está incluído</button>
+    <button class="pdp-tab-btn" onclick="switchTab('del',this)">Produção e entrega</button>
+  </div>
+  <div class="pdp-tab-c active" id="tab-desc">
+    <div class="pdp-desc">
+      <p>As tendas de arco 3LM são estruturas publicitárias personalizadas com impressão full-color incluída no preço. Disponíveis em quatro tamanhos, adaptam-se a qualquer contexto de presença de marca: feiras, mercados, eventos corporativos e ativações ao ar livre.</p>
+      <p>O tecido não perde a cor, é lavável e resistente à água e ao ar. A impressão é feita de um lado, com possibilidade de colocar o tecido tanto no interior como no exterior da tenda, graças ao velcro na parte superior em ambos os lados da parede. O topo pode ter todas as faces diferentes.</p>
+      <p>Dois tipos de tecido disponíveis: Banner 115g para eventos interiores e pontuais, e Impermeável 180g para utilização prolongada ao ar livre.</p>
+      <h3>Acessórios disponíveis</h3>
+      <p>Para além da cobertura principal, é possível encomendar paredes laterais, meias-paredes, janelas e portas. Todos os acessórios fixam por velcro e são compatíveis com qualquer tamanho de tenda 3LM. Disponíveis nos dois tecidos.</p>
+    </div>
+  </div>
+  <div class="pdp-tab-c" id="tab-inc">
+    <div class="inc-grid">
+      <div class="inc-item">
+        <div class="inc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/a4359d11-8df0-4eba-a573-8d8002d9d38f.jpeg" alt="Topo impresso"></div>
+        <div class="inc-body"><h4>Topo impresso</h4><p>Impressão full-color do teu design, incluída no preço. O topo pode ter todas as faces com impressões diferentes.</p></div>
+      </div>
+      <div class="inc-item">
+        <div class="inc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/ea35f2fa-30ce-499c-93f7-8258aa53df42.jpg" alt="Estrutura de alumínio"></div>
+        <div class="inc-body"><h4>Estrutura de alumínio</h4><p>Arco e pés em alumínio. Montagem rápida, sem ferramentas.</p></div>
+      </div>
+      <div class="inc-item">
+        <div class="inc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/5f627a71-62b6-4d8c-b378-6a3bb271e2cc.jpg" alt="Saco de transporte com rodas"></div>
+        <div class="inc-body"><h4>Saco de transporte com rodas</h4><p>A tenda vai toda dentro. Cabe no porta-bagagens de qualquer veículo ligeiro.</p></div>
+      </div>
+    </div>
+  </div>
+  <div class="pdp-tab-c" id="tab-del">
+    <div class="del-row"><div class="del-ico">📝</div><div class="del-body"><h4>Pedido e orçamento</h4><p>Preenches o formulário com as dimensões e detalhes. A equipa 3LM responde com orçamento em menos de 24 horas úteis.</p></div></div>
+    <div class="del-row"><div class="del-ico">🎨</div><div class="del-body"><h4>Arte finalizada</h4><p>Após confirmação, preparamos a arte para aprovação. Podes enviar o teu design ou pedir à nossa equipa. Revisões sem limite até aprovação.</p></div></div>
+    <div class="del-row"><div class="del-ico">🏭</div><div class="del-body"><h4>Produção nacional</h4><p>7 a 10 dias úteis após a aprovação final. Fabricamos e imprimimos em Portugal.</p></div></div>
+    <div class="del-row"><div class="del-ico">📦</div><div class="del-body"><h4>Envio rastreável</h4><p>Enviamos por transportadora para Portugal continental e ilhas. Espanha e resto da Europa com prazo adicional.</p></div></div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<section class="video-sec">
+  <div class="video-in">
+    <a href="https://3lm.pt/pt/tendas-arcos-personalizados" target="_blank" class="video-wrap">
+      <img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/4ff1c2f2-3465-420c-81c0-1a9616dd3d9b.jpeg" alt="Tenda 3LM em utilização">
+      <div class="video-play">
+        <div class="video-play-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+    </a>
+    <div class="video-content">
+      <div class="s-eye">Veja em acção</div>
+      <h2>As tendas 3LM no terreno</h2>
+      <p>Veja como as tendas de arco 3LM se integram em feiras, eventos ao ar livre e ativações de marca. Da montagem à presença visual, o vídeo mostra o produto em contexto real.</p>
+      <a href="https://3lm.pt/pt/tendas-arcos-personalizados" target="_blank" class="btn-red">Ver vídeo no site 3LM</a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS MIDDLE -->
+<div class="rcar" id="reviews" style="border-top:1px solid var(--border)">
+  <div class="rcar-in">
+    <div class="s-eye" style="margin-bottom:16px">O que dizem os clientes</div>
+    <div class="rcar-scroll">
+      <div class="rcar-track">
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente experiência com a 3 LM. Todo o processo, desde o pedido até à entrega, decorreu de forma irrepreensível, com elevado profissionalismo, organização e eficiência."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">Joana Patrícia</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo 100%! Efetuei encomenda à distância, tudo com muita facilidade e maior profissionalismo por parte dos colaboradores da 3LM. Chegou tudo conforme solicitado, muito bem embalado."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">José Pinto</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente preço qualidade. Equipa muito profissional e eficiente na prestação de serviços."</p><div class="rc-author"><div class="rc-av">RA</div><div><div class="rc-name">Renato Assunção</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo a todos que estejam abrindo seus negócios em Coimbra e região. Excelente qualidade e atendimento."</p><div class="rc-author"><div class="rc-av">AP</div><div><div class="rc-name">Alex Paz</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Aconselho vivamente. Funcionários e patrões muito simpáticos."</p><div class="rc-author"><div class="rc-av">ML</div><div><div class="rc-name">Maria Lucília Silva</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelentes profissionais."</p><div class="rc-author"><div class="rc-av">JV</div><div><div class="rc-name">Jorge Ventura</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Melhor parceiro de sempre."</p><div class="rc-author"><div class="rc-av">RD</div><div><div class="rc-name">Rui Pinho Domingues</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente experiência com a 3 LM. Todo o processo, desde o pedido até à entrega, decorreu de forma irrepreensível, com elevado profissionalismo, organização e eficiência."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">Joana Patrícia</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo 100%! Efetuei encomenda à distância, tudo com muita facilidade e maior profissionalismo por parte dos colaboradores da 3LM. Chegou tudo conforme solicitado, muito bem embalado."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">José Pinto</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente preço qualidade. Equipa muito profissional e eficiente na prestação de serviços."</p><div class="rc-author"><div class="rc-av">RA</div><div><div class="rc-name">Renato Assunção</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo a todos que estejam abrindo seus negócios em Coimbra e região. Excelente qualidade e atendimento."</p><div class="rc-author"><div class="rc-av">AP</div><div><div class="rc-name">Alex Paz</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Aconselho vivamente. Funcionários e patrões muito simpáticos."</p><div class="rc-author"><div class="rc-av">ML</div><div><div class="rc-name">Maria Lucília Silva</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelentes profissionais."</p><div class="rc-author"><div class="rc-av">JV</div><div><div class="rc-name">Jorge Ventura</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Melhor parceiro de sempre."</p><div class="rc-author"><div class="rc-av">RD</div><div><div class="rc-name">Rui Pinho Domingues</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BENEFITS -->
+<section class="benefits">
+  <div class="ben-in">
+    <div class="ben-hdr">
+      <div class="s-eye">Porquê a 3LM</div>
+      <h2 class="s-title">Construída para trabalhar</h2>
+      <p class="s-sub cx">Cada detalhe foi pensado para facilitar a logística do evento e garantir visibilidade à marca.</p>
+    </div>
+    <div class="ben-grid">
+      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v1m0 16v1m-9-9H3m18 0h-1M5.636 5.636l.707.707M18.364 18.364l-.707-.707M5.636 18.364l.707-.707M18.364 5.636l-.707.707" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Resistente à água e ao ar</h3><p>O tecido não perde a cor, é lavável e mantém as propriedades ao longo do tempo, mesmo em condições difíceis.</p></div>
+      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Feito em Portugal</h3><p>Produção nacional com controlo de qualidade direto. Sem intermediários, sem surpresas na entrega.</p></div>
+      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Montagem rápida, sem ferramentas</h3><p>O sistema de encaixe não requer ferramentas. A estrutura desmonta para o saco de transporte com rodas incluído.</p></div>
+      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Impressão full-color incluída</h3><p>Qualquer design, qualquer paleta, incluído no preço. O topo pode ter todas as faces com impressões diferentes.</p></div>
+      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Tecido colocável dos dois lados</h3><p>O velcro na parte superior permite colocar o tecido tanto no interior como no exterior, sem alterar a estrutura.</p></div>
+      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Transporte em saco com rodas</h3><p>Incluído em todos os tamanhos. A tenda cabe no porta-bagagens, sem necessidade de transporte especial.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE HIGHLIGHT -->
+<section class="fhl">
+  <div class="fhl-in">
+    <div class="fhl-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/2876b499-caaf-452f-965e-9ae58697f762.jpeg" alt="Tenda 3LM num evento ao ar livre"></div>
+    <div class="fhl-content">
+      <div class="s-eye">Visibilidade real</div>
+      <h2>Reconhecida à distância. Montada sem complicações.</h2>
+      <p>A tenda de arco define o espaço da marca, protege produtos e equipa e cria um ponto de referência visual num pavilhão ou espaço ao ar livre. É o elemento de presença mais eficiente para eventos.</p>
+      <blockquote class="fhl-quote">
+        "Recomendo 100%! Efetuei encomenda à distância, tudo com muita facilidade e maior profissionalismo por parte dos colaboradores da 3LM. Chegou tudo conforme solicitado, muito bem embalado."
+        <cite>José Pinto, Google</cite>
+      </blockquote>
+      <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="btn-red">Pedir Orçamento Gratuito</a>
+    </div>
+  </div>
+</section>
+
+<!-- TENT PICKER -->
+<section class="tent-picker">
+  <div class="tp-in">
+    <div class="tp-hdr">
+      <div class="s-eye">Tamanhos disponíveis</div>
+      <h2 class="s-title">Escolha a tenda certa</h2>
+      <p class="s-sub cx">Quatro tamanhos para cobrir qualquer necessidade, do stand compacto ao espaço de grande dimensão.</p>
+    </div>
+    <div class="tp-grid">
+      <div class="tp-card">
+        <div class="tp-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/bc88bd00-7df0-4818-9024-9ff3ce022724.png" alt="Tenda 1,5x1,5m"></div>
+        <div class="tp-body">
+          <div class="tp-size">1,5 × 1,5 m</div>
+          <p class="tp-desc">Compacta, fácil colocação em espaços reduzidos</p>
+          <div class="tp-price">A partir de 257€ <span class="tp-price-note">+ IVA</span></div>
+          <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="tp-btn">Pedir orçamento</a>
+        </div>
+      </div>
+      <div class="tp-card">
+        <div class="tp-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/d722369c-9ba4-4086-8081-827fdcf1d7c4.png" alt="Tenda 3x3m"></div>
+        <div class="tp-body">
+          <div class="tp-size">3 × 3 m</div>
+          <p class="tp-desc">Formato versátil para eventos, feiras e ativações</p>
+          <div class="tp-price">A partir de 368€ <span class="tp-price-note">+ IVA</span></div>
+          <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="tp-btn">Pedir orçamento</a>
+        </div>
+      </div>
+      <div class="tp-card">
+        <div class="tp-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/68397976-cb7b-4007-b6a7-71927499689e.png" alt="Tenda 3x4,5m"></div>
+        <div class="tp-body">
+          <div class="tp-size">3 × 4,5 m</div>
+          <p class="tp-desc">Mais espaço para equipas, produtos e atendimento</p>
+          <div class="tp-price">A partir de 475€ <span class="tp-price-note">+ IVA</span></div>
+          <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="tp-btn">Pedir orçamento</a>
+        </div>
+      </div>
+      <div class="tp-card">
+        <div class="tp-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/34584e67-9ec0-47c1-b2f1-4a8a8a75ab81.png" alt="Tenda 3x6m"></div>
+        <div class="tp-body">
+          <div class="tp-size">3 × 6 m</div>
+          <p class="tp-desc">Maior presença e área útil disponível</p>
+          <div class="tp-price">A partir de 614€ <span class="tp-price-note">+ IVA</span></div>
+          <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="tp-btn">Pedir orçamento</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE TABLES -->
+<section class="price-tbl-sec">
+  <div class="pt-in">
+    <div class="pt-hdr">
+      <div class="s-eye">Preços</div>
+      <h2 class="s-title">Tabelas de preços</h2>
+      <p class="s-sub">Todos os preços em euros, sem IVA. Impressão do design sempre incluída.</p>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="price-tbl">
+        <caption>Tenda completa (estrutura + impressão)</caption>
+        <thead><tr><th>Tamanho</th><th>Banner 115g</th><th>Impermeável 180g</th></tr></thead>
+        <tbody>
+          <tr><td>1,5 × 1,5 m</td><td class="col-red">257€</td><td>385€</td></tr>
+          <tr><td>3 × 3 m</td><td class="col-red">368€</td><td>522€</td></tr>
+          <tr><td>3 × 4,5 m</td><td class="col-red">475€</td><td>698€</td></tr>
+          <tr><td>3 × 6 m</td><td class="col-red">614€</td><td>922€</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="price-tbl">
+        <caption>Paredes laterais (por parede)</caption>
+        <thead><tr><th>Tamanho</th><th>Banner 115g</th><th>Impermeável 180g</th></tr></thead>
+        <tbody>
+          <tr><td>1,5 × 1,5 m</td><td>54€</td><td>69€</td></tr>
+          <tr><td>3 × 3 m</td><td>97€</td><td>123€</td></tr>
+          <tr><td>3 × 4,5 m</td><td>123€</td><td>171€</td></tr>
+          <tr><td>3 × 6 m</td><td>158€</td><td>238€</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="price-tbl">
+        <caption>Meias-paredes (por parede)</caption>
+        <thead><tr><th>Tamanho</th><th>Banner 115g</th><th>Impermeável 180g</th></tr></thead>
+        <tbody>
+          <tr><td>3 × 3 m</td><td>65€</td><td>78€</td></tr>
+          <tr><td>3 × 4,5 m</td><td>83€</td><td>109€</td></tr>
+          <tr><td>3 × 6 m</td><td>78€</td><td>118€</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="pt-note">Janelas e portas disponíveis apenas em tecido impermeável. Consulte preço. IVA não incluído.</p>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="howit">
+  <div class="howit-in">
+    <div class="howit-hdr">
+      <div class="s-eye">Como funciona</div>
+      <h2 class="s-title">Da encomenda ao evento</h2>
+      <p class="s-sub cx">Quatro passos, sem complicações e sem surpresas no orçamento final.</p>
+    </div>
+    <div class="howit-grid">
+      <div class="howit-line"></div>
+      <div class="howit-step"><div class="howit-num">1</div><h3>Pedes orçamento</h3><p>Preenches o formulário com o tamanho e notas. Resposta em 24 horas úteis.</p></div>
+      <div class="howit-step"><div class="howit-num">2</div><h3>Aproves o design</h3><p>A equipa prepara a arte. Tens prova digital antes de ir para impressão.</p></div>
+      <div class="howit-step"><div class="howit-num">3</div><h3>Produção em Portugal</h3><p>7 a 10 dias úteis após aprovação. Fabricamos e imprimimos em Portugal.</p></div>
+      <div class="howit-step"><div class="howit-num">4</div><h3>Entrega porta a porta</h3><p>Transportadora rastreável. Recebes o número de seguimento por email.</p></div>
+    </div>
+    <div class="howit-proof">
+      <div class="howit-pill"><span>★★★★☆</span> 4,0 no Google &nbsp;·&nbsp; 34 avaliações verificadas</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA MID -->
+<div class="cta-mid">
+  <div class="cta-mid-in">
+    <h2>Pronto para o próximo evento?</h2>
+    <p>Orçamento gratuito em menos de 24 horas. Sem compromisso de compra.</p>
+    <div class="cta-mid-row">
+      <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="btn-red">Pedir Orçamento</a>
+      <div class="cta-mid-proof"><span>★★★★☆</span>&nbsp;4,0 · 34 avaliações Google</div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCESSORIES -->
+<section class="acc-sec" id="addons">
+  <div class="acc-in">
+    <div class="acc-hdr">
+      <div class="s-eye">Acessórios</div>
+      <h2 class="s-title">Complete o seu stand</h2>
+      <p class="s-sub">Todos os acessórios fixam por velcro e são compatíveis com qualquer tamanho. Disponíveis nos dois tecidos.</p>
+    </div>
+    <div class="acc-grid">
+      <div class="acc-card">
+        <div class="acc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/52d18ca4-69a7-4b57-a5bb-b43ed239e64f.png" alt="Parede lateral"></div>
+        <div class="acc-body"><h3>Parede lateral</h3><p>Fecha o espaço da tenda em qualquer face. Com impressão full-color incluída.</p><div class="acc-price">A partir de 54€ <span class="acc-price-note">+ IVA</span></div></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/8f7d774f-28c9-4bd2-bccc-712c7f156b01.png" alt="Meia-parede"></div>
+        <div class="acc-body"><h3>Meia-parede</h3><p>Delimita o espaço sem bloquear totalmente a visibilidade. Ideal para balcões.</p><div class="acc-price">A partir de 65€ <span class="acc-price-note">+ IVA</span></div></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/8b04127b-3072-4eb2-bc14-c87b6a57e87b.png" alt="Janela"></div>
+        <div class="acc-body"><h3>Janela</h3><p>Integra numa parede lateral para manter visibilidade com a parede fechada. Tecido impermeável.</p><div class="acc-price">Consulte preço</div></div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/1dc323d3-f91f-4179-ad9f-9bea57930361.png" alt="Porta"></div>
+        <div class="acc-body"><h3>Porta</h3><p>Acesso controlado ao espaço da tenda. Integra nas paredes laterais, tecido impermeável.</p><div class="acc-price">Consulte preço</div></div>
+      </div>
+    </div>
+
+    <div class="bases-row">
+      <div class="bases-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/309798bc-d77e-4483-86b2-5fab4e36b91d.jpg" alt="Bases de carga 3LM"></div>
+      <div class="bases-info">
+        <h3>Bases de carga (pack de 4 unidades)</h3>
+        <p>Estabilizam a tenda em pavimento liso sem necessidade de estacas. Enchem-se com água ou areia no local. Cada base aguenta até 10 kg quando cheia.</p>
+        <div class="bases-specs">
+          <span class="bases-spec">38 cm × 15 cm por base</span>
+          <span class="bases-spec">Capacidade: 10 L/base</span>
+          <span class="bases-spec">Até 10 kg cheio</span>
+          <span class="bases-spec">Pack de 4 unidades</span>
+          <span class="bases-spec">Água ou areia</span>
+        </div>
+        <div class="bases-price">67,40€ <span class="bases-price-note">+ IVA, pack 4 unidades</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NOTAS IMPORTANTES -->
+<div class="notas-sec">
+  <div class="notas-in">
+    <h2>Notas importantes</h2>
+    <p>O tecido não perde a cor, é lavável e resistente à água e ao ar. A impressão é feita apenas de um lado, com possibilidade de colocar o tecido tanto no interior como no exterior da tenda, graças ao velcro na parte superior em ambos os lados da parede. O topo pode ter todas as faces diferentes.</p>
+  </div>
+</div>
+
+<!-- WHY US -->
+<section class="whyus">
+  <div class="why-in">
+    <div class="why-hdr">
+      <div class="s-eye">A diferença 3LM</div>
+      <h2 class="s-title">O que nos distingue</h2>
+      <p class="s-sub cx">Há dezenas de fornecedores de tendas personalizadas. Aqui está o que muda quando escolhes a 3LM.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card"><h3><em>↑</em>Qualidade sem compromisso no preço</h3><p>Produção nacional com controlo de qualidade direto. Sem intermediários, sem surpresas. O preço que vês inclui sempre a impressão completa.</p></div>
+      <div class="why-card"><h3><em>⏱</em>Prazo real, não prazo comercial</h3><p>7-10 dias úteis após aprovação do design. Não prometemos prazos impossíveis para fechar encomendas. Se houver algum imprevisto, avisamos antes de atrasar.</p></div>
+      <div class="why-card"><h3><em>🎨</em>Impressão sem limite de cores</h3><p>Qualquer design, qualquer paleta, qualquer degradé. A impressão full-color está sempre incluída no preço base, sem suplemento por cores.</p></div>
+      <div class="why-card"><h3><em>🤝</em>Suporte depois da entrega</h3><p>Impressão com problema? Contactas-nos, enviamos fotografias, resolvemos. Se a impressão não corresponder ao design aprovado, refazemos sem qualquer custo.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section class="usecases">
+  <div class="uc-in">
+    <div class="uc-hdr">
+      <div class="s-eye">Exemplos reais</div>
+      <h2 class="s-title">Onde está a 3LM</h2>
+      <p class="s-sub cx">Tendas 3LM em contexto real. Da feira local ao evento de marca.</p>
+    </div>
+    <div class="uc-grid">
+      <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/a4359d11-8df0-4eba-a573-8d8002d9d38f.jpeg" alt="Tenda 3LM em evento"></div><div class="uc-body"><h3>Feiras e exposições</h3><p>Em pavilhões com dezenas de stands, a tenda define o espaço da marca sem depender da estrutura do organizador.</p></div></div>
+      <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/4ff1c2f2-3465-420c-81c0-1a9616dd3d9b.jpeg" alt="Tenda 3LM ao ar livre"></div><div class="uc-body"><h3>Eventos ao ar livre</h3><p>Festivais, corridas, mercados. O tecido impermeável protege produtos e equipa durante o evento.</p></div></div>
+      <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/2876b499-caaf-452f-965e-9ae58697f762.jpeg" alt="Ativação de marca com tenda 3LM"></div><div class="uc-body"><h3>Ativações de marca</h3><p>Demos, degustações, pontos de contacto. A tenda cria um ambiente de marca em qualquer ponto de tráfego.</p></div></div>
+      <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/9f08ed72-6834-4da4-8bcb-8201080f2874.jpeg" alt="Stand com tenda 3LM"></div><div class="uc-body"><h3>Pontos de venda outdoor</h3><p>Com paredes laterais e bases de carga, a tenda transforma-se num espaço de atendimento completo.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CROSS-SELL -->
+<section class="cs-sec">
+  <div class="cs-in">
+    <div class="cs-hdr">
+      <div class="s-eye">Complete o seu kit</div>
+      <h2 class="s-title">Outros produtos 3LM</h2>
+    </div>
+    <div class="cs-grid">
+      <div class="cs-card"><div class="cs-img">🚩</div><div class="cs-body"><h3>Bandeirolas Publicitárias</h3><p>Visibilidade em altura para pontos de venda e eventos ao ar livre. Impressão incluída.</p><a href="https://3lm.pt/pt/bandeiras-publicitarias-impressao-incluida" class="cs-link">Ver produto →</a></div></div>
+      <div class="cs-card"><div class="cs-img">🎡</div><div class="cs-body"><h3>Roda da Sorte</h3><p>Interação imediata com o público. Customizável com a identidade visual da marca.</p><a href="https://3lm.pt/pt/roleta-da-sorte-em-pvc" class="cs-link">Ver produto →</a></div></div>
+      <div class="cs-card"><div class="cs-img">🏛️</div><div class="cs-body"><h3>Stands para Feiras</h3><p>Soluções modulares que se adaptam ao espaço disponível em cada evento.</p><a href="https://3lm.pt/pt/solucoes-modulares-para-feiras-e-eventos" class="cs-link">Ver produto →</a></div></div>
+      <div class="cs-card"><div class="cs-img">🛒</div><div class="cs-body"><h3>Balcões e Mesas</h3><p>Mobiliário de marca para atendimento, exposição de produto e ponto de caixa.</p><a href="https://3lm.pt/pt/balcoes-e-mesas" class="cs-link">Ver produto →</a></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS BEFORE FAQ -->
+<div class="rcar" style="border-top:1px solid var(--border)">
+  <div class="rcar-in">
+    <div class="rcar-top">
+      <div class="rcar-score">4,0</div>
+      <div>
+        <div class="rcar-stars">★★★★☆</div>
+        <div class="rcar-count">34 avaliações no Google</div>
+        <div class="rcar-line">3LM · Brindes e Expositores · Coimbra</div>
+      </div>
+    </div>
+    <div class="rcar-scroll">
+      <div class="rcar-track">
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente experiência com a 3 LM. Todo o processo, desde o pedido até à entrega, decorreu de forma irrepreensível, com elevado profissionalismo, organização e eficiência."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">Joana Patrícia</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo 100%! Efetuei encomenda à distância, tudo com muita facilidade e maior profissionalismo por parte dos colaboradores da 3LM. Chegou tudo conforme solicitado, muito bem embalado."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">José Pinto</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente preço qualidade. Equipa muito profissional e eficiente na prestação de serviços."</p><div class="rc-author"><div class="rc-av">RA</div><div><div class="rc-name">Renato Assunção</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo a todos que estejam abrindo seus negócios em Coimbra e região. Excelente qualidade e atendimento."</p><div class="rc-author"><div class="rc-av">AP</div><div><div class="rc-name">Alex Paz</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Aconselho vivamente. Funcionários e patrões muito simpáticos."</p><div class="rc-author"><div class="rc-av">ML</div><div><div class="rc-name">Maria Lucília Silva</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelentes profissionais."</p><div class="rc-author"><div class="rc-av">JV</div><div><div class="rc-name">Jorge Ventura</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card"><div class="rc-stars">★★★★★</div><p class="rc-text">"Melhor parceiro de sempre."</p><div class="rc-author"><div class="rc-av">RD</div><div><div class="rc-name">Rui Pinho Domingues</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente experiência com a 3 LM. Todo o processo, desde o pedido até à entrega, decorreu de forma irrepreensível, com elevado profissionalismo, organização e eficiência."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">Joana Patrícia</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo 100%! Efetuei encomenda à distância, tudo com muita facilidade e maior profissionalismo por parte dos colaboradores da 3LM. Chegou tudo conforme solicitado, muito bem embalado."</p><div class="rc-author"><div class="rc-av">JP</div><div><div class="rc-name">José Pinto</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelente preço qualidade. Equipa muito profissional e eficiente na prestação de serviços."</p><div class="rc-author"><div class="rc-av">RA</div><div><div class="rc-name">Renato Assunção</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Recomendo a todos que estejam abrindo seus negócios em Coimbra e região. Excelente qualidade e atendimento."</p><div class="rc-author"><div class="rc-av">AP</div><div><div class="rc-name">Alex Paz</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Aconselho vivamente. Funcionários e patrões muito simpáticos."</p><div class="rc-author"><div class="rc-av">ML</div><div><div class="rc-name">Maria Lucília Silva</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Excelentes profissionais."</p><div class="rc-author"><div class="rc-av">JV</div><div><div class="rc-name">Jorge Ventura</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+        <div class="rc-card" aria-hidden="true"><div class="rc-stars">★★★★★</div><p class="rc-text">"Melhor parceiro de sempre."</p><div class="rc-author"><div class="rc-av">RD</div><div><div class="rc-name">Rui Pinho Domingues</div><div class="rc-meta">Google</div></div><span class="rc-badge">Google</span></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="faq-in">
+    <div class="faq-hdr">
+      <div class="s-eye">FAQ</div>
+      <h2 class="s-title">Perguntas frequentes</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quanto tempo demora a produção?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">7 a 10 dias úteis após a aprovação final do design. O envio adiciona 1 a 2 dias para Portugal continental e mais tempo para as ilhas e Espanha.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso enviar o meu próprio design?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">Sim. Podes enviar o teu design ou pedir à equipa 3LM que prepare a arte. A impressão é feita de um lado do tecido. O topo pode ter todas as faces com impressões diferentes.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Qual a diferença entre Banner 115g e Impermeável 180g?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">O Banner 115g é mais leve e compacto, adequado para eventos interiores e utilização pontual ao ar livre. O Impermeável 180g tem maior resistência à água e é recomendado para utilização prolongada ao ar livre ou em condições climáticas mais exigentes.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quais são os tamanhos disponíveis?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">1,5 × 1,5 m (a partir de 257€ + IVA em Banner), 3 × 3 m (a partir de 368€ + IVA), 3 × 4,5 m (a partir de 475€ + IVA) e 3 × 6 m (a partir de 614€ + IVA). Preços para tecido Impermeável 180g são diferentes. Consulte a tabela de preços.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">O que acontece se a impressão tiver algum defeito?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">Se a impressão não corresponder ao design aprovado, refazemos a peça sem qualquer custo. Basta enviares fotografias do problema no prazo de 30 dias após a entrega.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso colocar o tecido nos dois lados da tenda?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">Sim. Graças ao velcro na parte superior em ambos os lados da parede, podes colocar o tecido tanto no interior como no exterior da tenda, sem alterar a estrutura.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso encomendar acessórios depois?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">Sim. Paredes laterais, meias-paredes, janelas, portas e bases de carga são compatíveis com todos os tamanhos e podem ser encomendados separadamente a qualquer momento.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="ctafinal">
+  <h2>Marca presença no próximo evento</h2>
+  <p class="ctafinal-q">"Excelente experiência com a 3 LM. Todo o processo, desde o pedido até à entrega, decorreu de forma irrepreensível, com elevado profissionalismo, organização e eficiência." Joana Patrícia, Google</p>
+  <a href="https://3lm.pt/pt/tendas-arcos-personalizados" class="ctafinal-btn">Pedir Orçamento Gratuito</a>
+  <div class="ctafinal-proof">★★★★☆ 4,0 no Google &nbsp;·&nbsp; Impressão incluída &nbsp;·&nbsp; Produção nacional &nbsp;·&nbsp; Entrega rastreável</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-in">
+    <div class="ft-trust">
+      <div class="ft-ti"><span>🖨️</span>Impressão incluída</div>
+      <div class="ft-ti"><span>🇵🇹</span>Produção nacional</div>
+      <div class="ft-ti"><span>📦</span>Envio rastreável</div>
+      <div class="ft-ti"><span>💧</span>Tecido resistente à água</div>
+    </div>
+    <div class="ft-cols">
+      <div class="ft-brand">
+        <div class="ft-logo">3LM</div>
+        <p>Materiais de comunicação para eventos e espaços comerciais. Produção nacional, entrega em toda a Península Ibérica.</p>
+        <br>
+        <p>Rua 4 de Julho, Armazém 10<br>3025-010 Pedrulha, Coimbra</p>
+      </div>
+      <div class="ft-col">
+        <h4>Produtos</h4>
+        <ul>
+          <li><a href="https://3lm.pt/pt/tendas-arcos-personalizados">Tendas de Arco</a></li>
+          <li><a href="https://3lm.pt/pt/bandeiras-publicitarias-impressao-incluida">Bandeirolas</a></li>
+          <li><a href="https://3lm.pt/pt/solucoes-modulares-para-feiras-e-eventos">Stands</a></li>
+          <li><a href="https://3lm.pt/pt/balcoes-e-mesas">Balcões e Mesas</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Empresa</h4>
+        <ul>
+          <li><a href="https://3lm.pt">Sobre a 3LM</a></li>
+          <li><a href="https://3lm.pt">Contacto</a></li>
+          <li><a href="https://3lm.pt">Privacidade</a></li>
+          <li><a href="https://3lm.pt">Termos e Condições</a></li>
+        </ul>
+      </div>
+      <div class="ft-col">
+        <h4>Suporte</h4>
+        <ul>
+          <li><a href="mailto:3lm@3lm.pt">3lm@3lm.pt</a></li>
+          <li><a href="tel:+351239983322">+351 239 98 33 22</a></li>
+          <li><a href="https://wa.me/351917251465">WhatsApp: +351 917 251 465</a></li>
+          <li><a href="#faq">Seg-Sex, 9h-13h / 14h-18h</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft-btm">
+      <span>© 2025 3LM. Todos os direitos reservados.</span>
+      <span>IVA não incluído nos preços indicados · Produção em Portugal</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const prices={
+  banner:{s1:257,s2:368,s3:475,s4:614},
+  imperm:{s1:385,s2:522,s3:698,s4:922}
+};
+const sizeNames={
+  s1:'Tenda 1,5 × 1,5 m',s2:'Tenda 3 × 3 m',
+  s3:'Tenda 3 × 4,5 m',s4:'Tenda 3 × 6 m'
+};
+const sizeDesc={
+  s1:'Compacta, fácil colocação em espaços reduzidos',
+  s2:'Formato versátil para eventos, feiras e ativações',
+  s3:'Mais espaço para equipas, produtos e atendimento',
+  s4:'Maior presença e área útil disponível'
+};
+let curFab='banner',curSz='s1';
+
+function updatePDP(){
+  const p=prices[curFab][curSz];
+  document.getElementById('pdpPrice').textContent=p+'€';
+  document.getElementById('szName').textContent=sizeNames[curSz];
+  document.getElementById('szPrice').textContent=p+'€ + IVA';
+  document.getElementById('szDesc').textContent=sizeDesc[curSz];
+}
+function selectFabric(fab,btn){
+  curFab=fab;
+  document.querySelectorAll('.fab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  updatePDP();
+}
+function updateSize(k,btn){
+  curSz=k;
+  document.querySelectorAll('.pdp-sz-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  updatePDP();
+}
+function switchTab(id,btn){
+  document.querySelectorAll('.pdp-tab-c').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pdp-tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+function toggleFaq(btn){
+  btn.closest('.faq-item').classList.toggle('open');
+}
+function switchImg(thumb,url){
+  document.getElementById('mainImg').src=url;
+  document.querySelectorAll('.gal-thumb').forEach(t=>t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+</script>
+</body>
+</html>
