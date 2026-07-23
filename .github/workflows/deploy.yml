@@ -24,11 +24,10 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
-          rsync -avz --delete \
-            --include='*.html' \
-            --filter='- *' \
+          rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \
-            ./ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+            tendas.html tendas_obrigado.html \
+            "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
 
       - name: Verificar deploy
         env:
@@ -42,4 +41,4 @@ jobs:
             -p "$SSH_PORT" \
             -o StrictHostKeyChecking=no \
             "$SSH_USER@$SSH_HOST" \
-            "echo '=== Ficheiros no servidor ===' && ls -lh $DEPLOY_PATH/*.html"
+            "ls -lh $DEPLOY_PATH/tendas.html $DEPLOY_PATH/tendas_obrigado.html"
