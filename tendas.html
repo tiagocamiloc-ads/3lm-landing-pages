@@ -154,16 +154,21 @@ ul{list-style:none}
 .video-h{font-family:'Inter',system-ui,sans-serif;font-size:1.75rem;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:0}
 .video-desc{color:var(--muted);font-size:.95rem;line-height:1.75;margin-bottom:0}
 
-/* BENEFITS */
+/* BENEFITS — BENTO */
 .benefits{padding:64px 20px}
 .ben-in{max-width:var(--max);margin:0 auto}
-.ben-hdr{text-align:center;margin-bottom:48px}
-.ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
-.ben-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px 24px}
-.ben-ico{width:48px;height:48px;border-radius:10px;background:var(--red-lt);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.ben-ico svg{width:24px;height:24px;color:var(--red)}
-.ben-card h3{font-weight:700;font-size:.95rem;margin-bottom:8px}
-.ben-card p{font-size:.85rem;color:var(--muted);line-height:1.6}
+.ben-hdr{text-align:center;margin-bottom:40px}
+.ben-bento{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;grid-template-rows:auto auto;gap:12px}
+.ben-hero{grid-row:span 2;position:relative;border-radius:12px;overflow:hidden;min-height:300px}
+.ben-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ben-photo{position:relative;border-radius:12px;overflow:hidden;min-height:140px;grid-column:span 2}
+.ben-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ben-caption{position:absolute;bottom:12px;left:12px;right:12px;background:rgba(255,255,255,.93);border-radius:8px;padding:12px 14px;backdrop-filter:blur(4px)}
+.ben-caption strong{display:block;font-size:.88rem;font-weight:700;color:var(--text)}
+.ben-caption span{display:block;font-size:.78rem;color:var(--muted);margin-top:2px;line-height:1.4}
+.ben-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px 20px;display:flex;flex-direction:column;justify-content:center}
+.ben-card h3{font-weight:700;font-size:.9rem;margin-bottom:6px;color:var(--text)}
+.ben-card p{font-size:.82rem;color:var(--muted);line-height:1.6;margin:0}
 
 /* FEATURE HIGHLIGHT */
 .fhl{padding:64px 20px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -373,7 +378,9 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
 @media(max-width:1024px){
   .product{grid-template-columns:1fr;gap:32px}
   .gallery{position:static}
-  .ben-grid{grid-template-columns:repeat(2,1fr)}
+  .ben-bento{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .ben-hero{grid-row:span 1;grid-column:span 2;min-height:220px}
+  .ben-photo{grid-column:span 2}
   .howit-grid{grid-template-columns:repeat(2,1fr);gap:32px}
   .howit-line{display:none}
   .ft-cols{grid-template-columns:1fr 1fr}
@@ -409,7 +416,8 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
   .pdp h1{font-size:1.75rem}
   .tp-grid{grid-template-columns:1fr}
   .acc-grid{grid-template-columns:1fr}
-  .ben-grid{grid-template-columns:1fr}
+  .ben-bento{grid-template-columns:1fr}
+  .ben-hero,.ben-photo{grid-column:span 1;min-height:200px}
   .whyus-stats{grid-template-columns:1fr}
   .ft-btm{flex-direction:column;align-items:flex-start;gap:4px}
   .ctafinal h2{font-size:1.6rem}
@@ -660,13 +668,47 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       <h2 class="s-title">Construída para trabalhar</h2>
       <p class="s-sub cx">Cada detalhe foi pensado para facilitar a logística do evento e garantir visibilidade à marca.</p>
     </div>
-    <div class="ben-grid">
-      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v1m0 16v1m-9-9H3m18 0h-1M5.636 5.636l.707.707M18.364 18.364l-.707-.707M5.636 18.364l.707-.707M18.364 5.636l-.707.707" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Resistente à água e ao ar</h3><p>O tecido não perde a cor, é lavável e mantém as propriedades ao longo do tempo, mesmo em condições difíceis.</p></div>
-      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Feito em Portugal</h3><p>Produção nacional com controlo de qualidade direto. Sem intermediários, sem surpresas na entrega.</p></div>
-      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Montagem rápida, sem ferramentas</h3><p>O sistema de encaixe não requer ferramentas. A estrutura desmonta para o saco de transporte com rodas incluído.</p></div>
-      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Impressão full-color incluída</h3><p>Qualquer design, qualquer paleta, incluído no preço. O topo pode ter todas as faces com impressões diferentes.</p></div>
-      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Tecido colocável dos dois lados</h3><p>O velcro na parte superior permite colocar o tecido tanto no interior como no exterior, sem alterar a estrutura.</p></div>
-      <div class="ben-card"><div class="ben-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" stroke-linecap="round" stroke-linejoin="round"/></svg></div><h3>Transporte em saco com rodas</h3><p>Incluído em todos os tamanhos. A tenda cabe no porta-bagagens, sem necessidade de transporte especial.</p></div>
+    <div class="ben-bento">
+
+      <!-- Bloco hero: foto de contexto -->
+      <div class="ben-hero">
+        <img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/2876b499-caaf-452f-965e-9ae58697f762.jpeg"
+             alt="Tenda 3LM personalizada em evento ao ar livre" loading="lazy">
+        <div class="ben-caption">
+          <strong>Feito em Portugal</strong>
+          <span>Produção nacional. Sem intermediários, sem surpresas na entrega.</span>
+        </div>
+      </div>
+
+      <!-- Linha 1, colunas 2-4 -->
+      <div class="ben-card">
+        <h3>Resistente à água e ao ar</h3>
+        <p>O tecido não perde a cor, é lavável e mantém as propriedades ao longo do tempo, mesmo em condições difíceis.</p>
+      </div>
+
+      <div class="ben-photo" style="grid-column:span 2">
+        <img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/5f627a71-62b6-4d8c-b378-6a3bb271e2cc.jpg"
+             alt="Saco de transporte com rodas incluído na tenda 3LM" loading="lazy">
+        <div class="ben-caption">
+          <strong>Transporte em saco com rodas</strong>
+          <span>Cabe no porta-bagagens de qualquer carro.</span>
+        </div>
+      </div>
+
+      <!-- Linha 2, colunas 2-4 -->
+      <div class="ben-card">
+        <h3>Montagem rápida, sem ferramentas</h3>
+        <p>Sistema de encaixe que qualquer pessoa monta em minutos. Desmonta para o saco incluído.</p>
+      </div>
+      <div class="ben-card">
+        <h3>Impressão full-color incluída</h3>
+        <p>Qualquer design, qualquer paleta, incluído no preço. Faces do topo com impressões diferentes.</p>
+      </div>
+      <div class="ben-card">
+        <h3>Tecido colocável dos dois lados</h3>
+        <p>O velcro permite colocar o tecido no interior ou exterior da estrutura, sem ferramentas.</p>
+      </div>
+
     </div>
   </div>
 </section>
