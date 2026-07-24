@@ -151,5 +151,6 @@ if ($httpCode === 200 && isset($result['id'])) {
     echo json_encode(['ok' => true]);
 } else {
     http_response_code(500);
-    echo json_encode(['ok' => false, 'error' => 'Erro ao enviar email. Tente novamente.']);
+    $resend_error = $result['message'] ?? $result['name'] ?? $response;
+    echo json_encode(['ok' => false, 'error' => 'Resend '.$httpCode.': '.$resend_error]);
 }
