@@ -18,7 +18,12 @@ $meias    = clean($_POST['meias_paredes'] ?? '');
 $janela   = clean($_POST['janela']        ?? '');
 $porta    = clean($_POST['porta']         ?? '');
 $bases    = clean($_POST['bases']         ?? '');
-$notas    = clean($_POST['notas']         ?? '');
+$notas       = clean($_POST['notas']        ?? '');
+$utm_source   = clean($_POST['utm_source']   ?? '');
+$utm_medium   = clean($_POST['utm_medium']   ?? '');
+$utm_campaign = clean($_POST['utm_campaign'] ?? '');
+$utm_content  = clean($_POST['utm_content']  ?? '');
+$utm_term     = clean($_POST['utm_term']     ?? '');
 
 if (!$nome || !$telefone || !$empresa) {
     http_response_code(400);
@@ -61,6 +66,13 @@ $body .= "Bases de carga:   " . ($bases   ?: '—') . "\n\n";
 
 $body .= "NOTAS / ARTE\n";
 $body .= ($notas ?: '—') . "\n\n";
+
+$body .= "ORIGEM DA LEAD\n";
+$body .= "Fonte:     " . ($utm_source   ?: '—') . "\n";
+$body .= "Canal:     " . ($utm_medium   ?: '—') . "\n";
+$body .= "Campanha:  " . ($utm_campaign ?: '—') . "\n";
+$body .= "Conteúdo:  " . ($utm_content  ?: '—') . "\n";
+$body .= "Termo:     " . ($utm_term     ?: '—') . "\n\n";
 
 $body .= "$sep\n";
 $body .= "Recebido em " . date('d/m/Y H:i') . " UTC\n";
