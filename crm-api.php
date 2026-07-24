@@ -33,6 +33,7 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
         CURLOPT_CUSTOMREQUEST  => $httpMethod,
         CURLOPT_HTTPHEADER     => $headers,
         CURLOPT_TIMEOUT        => 10,
+        CURLOPT_ENCODING       => '',
     ]);
     if ($body !== null) curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     $resp     = curl_exec($ch);

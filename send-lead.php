@@ -135,6 +135,7 @@ if ($httpCode === 200 && isset($result['id'])) {
     curl_setopt_array($sbCh, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST           => true,
+        CURLOPT_ENCODING       => '',
         CURLOPT_HTTPHEADER     => [
             'apikey: '        . SUPABASE_SERVICE_KEY,
             'Authorization: Bearer ' . SUPABASE_SERVICE_KEY,
