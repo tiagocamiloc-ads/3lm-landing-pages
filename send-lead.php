@@ -2,7 +2,9 @@
 header('Content-Type: application/json; charset=utf-8');
 
 define('RESEND_API_KEY', 're_FPfLWppB_3yUQzkDgo9PE4tKZDDqrsz9D');
-define('TO_EMAIL', 'tiagocamiloc@gmail.com');
+define('TO_EMAIL',       'tiagocamiloc@gmail.com');
+
+require_once __DIR__ . '/config.php';
 
 function clean($v) {
     return htmlspecialchars(strip_tags(trim($v ?? '')), ENT_QUOTES, 'UTF-8');
@@ -105,6 +107,47 @@ curl_close($ch);
 $result = json_decode($response, true);
 
 if ($httpCode === 200 && isset($result['id'])) {
+    // Save lead to Supabase (fire-and-forget — email already sent)
+    $leadData = json_encode([
+        'produto'       => 'tendas-para-eventos',
+        'nome'          => $nome,
+        'email'         => $email,
+        'telefone'      => $telefone,
+        'empresa'       => $empresa,
+        'tamanho'       => $tamanho   ?: null,
+        'tecido'        => $tecido    ?: null,
+        'quantidade'    => $qtd       ?: null,
+        'faces'         => $faces     ?: null,
+        'paredes'       => $paredes   ?: null,
+        'meias_paredes' => $meias     ?: null,
+        'janela'        => $janela    ?: null,
+        'porta'         => $porta     ?: null,
+        'bases'         => $bases     ?: null,
+        'notas'         => $notas     ?: null,
+        'utm_source'    => $utm_source    ?: null,
+        'utm_medium'    => $utm_medium    ?: null,
+        'utm_campaign'  => $utm_campaign  ?: null,
+        'utm_content'   => $utm_content   ?: null,
+        'utm_term'      => $utm_term      ?: null,
+        'status'        => 'por_contatar',
+    ]);
+
+    $sbCh = curl_init(SUPABASE_URL . '/rest/v1/leads');
+    curl_setopt_array($sbCh, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_HTTPHEADER     => [
+            'apikey: '        . SUPABASE_SERVICE_KEY,
+            'Authorization: Bearer ' . SUPABASE_SERVICE_KEY,
+            'Content-Type: application/json',
+            'Prefer: return=minimal',
+        ],
+        CURLOPT_POSTFIELDS     => $leadData,
+        CURLOPT_TIMEOUT        => 8,
+    ]);
+    curl_exec($sbCh);
+    curl_close($sbCh);
+
     echo json_encode(['ok' => true]);
 } else {
     http_response_code(500);
