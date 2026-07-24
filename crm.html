@@ -166,7 +166,7 @@ var st = {
 // ─── API ────────────────────────────────────────────────────────────────────
 
 function api(action, params, method, body, skipAutoLogout) {
-  var url = API + '?action=' + action;
+  var url = API + '?action=' + action + '&_t=' + Date.now();
   if (params) Object.keys(params).forEach(function(k){ if(params[k]) url += '&'+k+'='+encodeURIComponent(params[k]); });
   var opts = {method: method||'GET', headers:{'Authorization':'Bearer '+st.token}};
   if (body) { opts.headers['Content-Type']='application/json'; opts.body=JSON.stringify(body); }
@@ -182,7 +182,6 @@ function loadLeads() {
   if (st.statusFilter)  params.status  = st.statusFilter;
   if (st.produtoFilter) params.produto = st.produtoFilter;
   return api('list', params).then(function(d){
-    console.log('[CRM] loadLeads params:', JSON.stringify(params), '| resposta:', JSON.stringify(d));
     st.leads = Array.isArray(d) ? d : []; st.loading = false; render();
   }).catch(function(e){ console.error('[CRM] loadLeads erro:', e); st.loading = false; render(); });
 }

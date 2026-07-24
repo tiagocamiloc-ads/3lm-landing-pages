@@ -1,5 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Pragma: no-cache');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Authorization, Content-Type');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
@@ -41,20 +43,6 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
     return ['code' => $httpCode, 'body' => $resp];
-}
-
-// ── DEBUG ─────────────────────────────────────────────────────────────
-if ($method === 'GET' && $action === 'debug') {
-    $cols = 'id,created_at,produto,nome,email,telefone,empresa,tamanho,tecido,quantidade,faces,paredes,meias_paredes,janela,porta,bases,notas,utm_source,utm_medium,utm_campaign,utm_content,utm_term,status,notas_internas';
-    $r1 = sb_request('leads_3lm?select=id,produto,status&order=created_at.desc&limit=1000');
-    $r2 = sb_request('leads_3lm?select=' . $cols . '&order=created_at.desc&limit=1000');
-    $d2 = json_decode($r2['body'], true);
-    echo json_encode([
-        'v' => 4,
-        'select_3cols'     => ['code' => $r1['code'], 'count' => count(json_decode($r1['body'], true) ?? [])],
-        'select_allcols'   => ['code' => $r2['code'], 'count' => count($d2 ?? []), 'raw_len' => strlen($r2['body']), 'json_error' => json_last_error_msg(), 'data' => $d2],
-    ]);
-    exit;
 }
 
 // ── GET list ──────────────────────────────────────────────────────────
