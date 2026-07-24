@@ -60,8 +60,9 @@ if ($method === 'GET' && $action === 'list') {
     $qs = 'leads_3lm?select=*&order=created_at.desc&limit=1000';
     if (!empty($_GET['status']))  $qs .= '&status=eq.' . urlencode($_GET['status']);
     if (!empty($_GET['produto'])) $qs .= '&produto=eq.' . urlencode($_GET['produto']);
-    $r = sb_request($qs);
-    echo $r['body'];
+    $r    = sb_request($qs);
+    $data = json_decode($r['body'], true);
+    echo json_encode($data ?? []);
     exit;
 }
 
