@@ -1,29 +1,32 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
+define('RESEND_API_KEY', 're_FPfLWppB_3yUQzkDgo9PE4tKZDDqrsz9D');
+define('TO_EMAIL', 'tiagocamiloc@gmail.com');
+
 function clean($v) {
     return htmlspecialchars(strip_tags(trim($v ?? '')), ENT_QUOTES, 'UTF-8');
 }
 
-$nome     = clean($_POST['nome']          ?? '');
-$email    = clean($_POST['email']         ?? '');
-$telefone = clean($_POST['telefone']      ?? '');
-$empresa  = clean($_POST['empresa']       ?? '');
-$tamanho  = clean($_POST['tamanho']       ?? '');
-$tecido   = clean($_POST['tecido']        ?? '');
-$qtd      = clean($_POST['qtd_tendas']    ?? '');
-$faces    = clean($_POST['faces']         ?? '');
-$paredes  = clean($_POST['paredes']       ?? '');
-$meias    = clean($_POST['meias_paredes'] ?? '');
-$janela   = clean($_POST['janela']        ?? '');
-$porta    = clean($_POST['porta']         ?? '');
-$bases    = clean($_POST['bases']         ?? '');
-$notas       = clean($_POST['notas']        ?? '');
-$utm_source   = clean($_POST['utm_source']   ?? '');
-$utm_medium   = clean($_POST['utm_medium']   ?? '');
-$utm_campaign = clean($_POST['utm_campaign'] ?? '');
-$utm_content  = clean($_POST['utm_content']  ?? '');
-$utm_term     = clean($_POST['utm_term']     ?? '');
+$nome         = clean($_POST['nome']          ?? '');
+$email        = clean($_POST['email']         ?? '');
+$telefone     = clean($_POST['telefone']      ?? '');
+$empresa      = clean($_POST['empresa']       ?? '');
+$tamanho      = clean($_POST['tamanho']       ?? '');
+$tecido       = clean($_POST['tecido']        ?? '');
+$qtd          = clean($_POST['qtd_tendas']    ?? '');
+$faces        = clean($_POST['faces']         ?? '');
+$paredes      = clean($_POST['paredes']       ?? '');
+$meias        = clean($_POST['meias_paredes'] ?? '');
+$janela       = clean($_POST['janela']        ?? '');
+$porta        = clean($_POST['porta']         ?? '');
+$bases        = clean($_POST['bases']         ?? '');
+$notas        = clean($_POST['notas']         ?? '');
+$utm_source   = clean($_POST['utm_source']    ?? '');
+$utm_medium   = clean($_POST['utm_medium']    ?? '');
+$utm_campaign = clean($_POST['utm_campaign']  ?? '');
+$utm_content  = clean($_POST['utm_content']   ?? '');
+$utm_term     = clean($_POST['utm_term']      ?? '');
 
 if (!$nome || !$telefone || !$empresa) {
     http_response_code(400);
@@ -31,19 +34,16 @@ if (!$nome || !$telefone || !$empresa) {
     exit;
 }
 
-$rawEmail = $_POST['email'] ?? '';
-if (!filter_var($rawEmail, FILTER_VALIDATE_EMAIL)) {
+if (!filter_var($_POST['email'] ?? '', FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
     echo json_encode(['ok' => false, 'error' => 'Email inválido.']);
     exit;
 }
 
-// Subject — references the product clearly
 $subject = 'Nova Lead | Tendas Para Eventos | ' . ($empresa ?: $nome);
 
-// Plain-text body with all lead details
-$sep  = str_repeat('─', 48);
-$body = "NOVA LEAD — TENDAS PARA EVENTOS\n$sep\n\n";
+$sep  = str_repeat('-', 48);
+$body = "NOVA LEAD - TENDAS PARA EVENTOS\n$sep\n\n";
 
 $body .= "CONTACTO\n";
 $body .= "Nome:     $nome\n";
@@ -52,41 +52,59 @@ $body .= "Telefone: $telefone\n";
 $body .= "Empresa:  $empresa\n\n";
 
 $body .= "TENDA\n";
-$body .= "Tamanho:    " . ($tamanho ?: '—') . "\n";
-$body .= "Tecido:     " . ($tecido  ?: '—') . "\n";
-$body .= "Quantidade: " . ($qtd     ?: '—') . "\n";
-$body .= "Faces topo: " . ($faces   ?: '—') . "\n\n";
+$body .= "Tamanho:    " . ($tamanho ?: '-') . "\n";
+$body .= "Tecido:     " . ($tecido  ?: '-') . "\n";
+$body .= "Quantidade: " . ($qtd     ?: '-') . "\n";
+$body .= "Faces topo: " . ($faces   ?: '-') . "\n\n";
 
-$body .= "ACESSÓRIOS\n";
-$body .= "Paredes laterais: " . ($paredes ?: '—') . "\n";
-$body .= "Meias-paredes:    " . ($meias   ?: '—') . "\n";
-$body .= "Janela:           " . ($janela  ?: '—') . "\n";
-$body .= "Porta:            " . ($porta   ?: '—') . "\n";
-$body .= "Bases de carga:   " . ($bases   ?: '—') . "\n\n";
+$body .= "ACESSORIOS\n";
+$body .= "Paredes laterais: " . ($paredes ?: '-') . "\n";
+$body .= "Meias-paredes:    " . ($meias   ?: '-') . "\n";
+$body .= "Janela:           " . ($janela  ?: '-') . "\n";
+$body .= "Porta:            " . ($porta   ?: '-') . "\n";
+$body .= "Bases de carga:   " . ($bases   ?: '-') . "\n\n";
 
 $body .= "NOTAS / ARTE\n";
-$body .= ($notas ?: '—') . "\n\n";
+$body .= ($notas ?: '-') . "\n\n";
 
 $body .= "ORIGEM DA LEAD\n";
-$body .= "Fonte:     " . ($utm_source   ?: '—') . "\n";
-$body .= "Canal:     " . ($utm_medium   ?: '—') . "\n";
-$body .= "Campanha:  " . ($utm_campaign ?: '—') . "\n";
-$body .= "Conteúdo:  " . ($utm_content  ?: '—') . "\n";
-$body .= "Termo:     " . ($utm_term     ?: '—') . "\n\n";
+$body .= "Fonte:     " . ($utm_source   ?: '-') . "\n";
+$body .= "Canal:     " . ($utm_medium   ?: '-') . "\n";
+$body .= "Campanha:  " . ($utm_campaign ?: '-') . "\n";
+$body .= "Conteudo:  " . ($utm_content  ?: '-') . "\n";
+$body .= "Termo:     " . ($utm_term     ?: '-') . "\n\n";
 
 $body .= "$sep\n";
 $body .= "Recebido em " . date('d/m/Y H:i') . " UTC\n";
-$body .= "Produto: Tendas Para Eventos — produtos.3lm.pt\n";
+$body .= "Produto: Tendas Para Eventos - produtos.3lm.pt\n";
 
-$to      = 'tiagocamiloc@gmail.com';
-$headers  = "From: noreply@3lm.pt\r\n";
-$headers .= "Reply-To: $email\r\n";
-$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
-$headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
+$payload = json_encode([
+    'from'       => 'Leads 3LM <onboarding@resend.dev>',
+    'to'         => [TO_EMAIL],
+    'reply_to'   => $email,
+    'subject'    => $subject,
+    'text'       => $body,
+]);
 
-$sent = mail($to, '=?UTF-8?B?' . base64_encode($subject) . '?=', $body, $headers);
+$ch = curl_init('https://api.resend.com/emails');
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST           => true,
+    CURLOPT_HTTPHEADER     => [
+        'Authorization: Bearer ' . RESEND_API_KEY,
+        'Content-Type: application/json',
+    ],
+    CURLOPT_POSTFIELDS     => $payload,
+    CURLOPT_TIMEOUT        => 10,
+]);
 
-if ($sent) {
+$response = curl_exec($ch);
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
+
+$result = json_decode($response, true);
+
+if ($httpCode === 200 && isset($result['id'])) {
     echo json_encode(['ok' => true]);
 } else {
     http_response_code(500);
