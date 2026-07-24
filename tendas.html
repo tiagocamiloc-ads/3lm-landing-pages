@@ -196,11 +196,11 @@ ul{list-style:none}
 .tp-price{font-weight:700;color:var(--red);font-size:.9rem;margin-bottom:12px}
 .tp-price-note{font-size:.72rem;color:var(--muted);font-weight:400}
 .tp-prices{margin-bottom:12px}
-.tp-price-row{display:flex;justify-content:space-between;align-items:baseline;font-size:.8rem;padding:3px 0;border-bottom:1px solid var(--border)}
+.tp-price-row{display:flex;flex-direction:column;padding:6px 0;border-bottom:1px solid var(--border)}
 .tp-price-row:last-of-type{border-bottom:none}
-.tp-flabel{color:var(--muted);font-size:.75rem}
-.tp-price-row strong{color:var(--red);font-size:.86rem}
-.tp-pvat{font-size:.7rem;color:var(--muted);margin-top:4px}
+.tp-flabel{color:var(--muted);font-size:.78rem}
+.tp-price-row strong{color:var(--red);font-size:.95rem;font-weight:700;margin-top:1px}
+.tp-pvat{font-size:.7rem;color:var(--muted);margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
 .tp-prices-label{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid var(--border)}
 .tp-btn{display:block;text-align:center;background:var(--red);color:#fff;border-radius:var(--r);padding:10px;font-size:.82rem;font-weight:700;transition:background .18s}
 .tp-btn:hover{background:var(--red-dk)}
@@ -751,10 +751,10 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
           <div class="tp-size">1,5 × 1,5 m</div>
           <p class="tp-desc">Compacta, fácil colocação em espaços reduzidos</p>
           <div class="tp-prices">
-            <div class="tp-prices-label">Tenda completa (estrutura + impressão)</div>
+            <div class="tp-prices-label">Tipo de Tecido</div>
             <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>257€</strong></div>
             <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>385€</strong></div>
-            <div class="tp-pvat">+ IVA · impressão incluída</div>
+            <div class="tp-pvat">+ IVA · Tenda completa (estrutura + impressão)</div>
           </div>
           <a href="#" onclick="openForm('1,5 × 1,5 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
@@ -765,10 +765,10 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
           <div class="tp-size">3 × 3 m</div>
           <p class="tp-desc">Formato versátil para eventos, feiras e ativações</p>
           <div class="tp-prices">
-            <div class="tp-prices-label">Tenda completa (estrutura + impressão)</div>
+            <div class="tp-prices-label">Tipo de Tecido</div>
             <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>368€</strong></div>
             <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>522€</strong></div>
-            <div class="tp-pvat">+ IVA · impressão incluída</div>
+            <div class="tp-pvat">+ IVA · Tenda completa (estrutura + impressão)</div>
           </div>
           <a href="#" onclick="openForm('3 × 3 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
@@ -779,10 +779,10 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
           <div class="tp-size">3 × 4,5 m</div>
           <p class="tp-desc">Mais espaço para equipas, produtos e atendimento</p>
           <div class="tp-prices">
-            <div class="tp-prices-label">Tenda completa (estrutura + impressão)</div>
+            <div class="tp-prices-label">Tipo de Tecido</div>
             <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>475€</strong></div>
             <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>698€</strong></div>
-            <div class="tp-pvat">+ IVA · impressão incluída</div>
+            <div class="tp-pvat">+ IVA · Tenda completa (estrutura + impressão)</div>
           </div>
           <a href="#" onclick="openForm('3 × 4,5 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
@@ -793,10 +793,10 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
           <div class="tp-size">3 × 6 m</div>
           <p class="tp-desc">Maior presença e área útil disponível</p>
           <div class="tp-prices">
-            <div class="tp-prices-label">Tenda completa (estrutura + impressão)</div>
+            <div class="tp-prices-label">Tipo de Tecido</div>
             <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>614€</strong></div>
             <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>922€</strong></div>
-            <div class="tp-pvat">+ IVA · impressão incluída</div>
+            <div class="tp-pvat">+ IVA · Tenda completa (estrutura + impressão)</div>
           </div>
           <a href="#" onclick="openForm('3 × 6 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
@@ -817,7 +817,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       <div class="howit-line"></div>
       <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6M9 16h6M5 4h14a1 1 0 011 1v14a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 4v0a3 3 0 006 0v0"/></svg></div>
-        <div class="howit-card-body"><h3>Pede orçamento</h3><p>Preenche o formulário com o tamanho e notas. Resposta em 24 horas úteis.</p></div>
+        <div class="howit-card-body"><h3>Pede orçamento</h3><p>Preenche o formulário com o pretendido. Resposta em 24 horas úteis.</p></div>
       </div>
       <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" stroke-linecap="round" stroke-linejoin="round"/><path stroke-linecap="round" stroke-linejoin="round" d="M1 10h22"/></svg></div>
@@ -825,11 +825,11 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       </div>
       <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg></div>
-        <div class="howit-card-body"><h3>Envia o ficheiro</h3><p>Envie o ficheiro pronto a imprimir após confirmação do pagamento. PDF, AI ou JPEG de alta resolução.</p></div>
+        <div class="howit-card-body"><h3>Envia o ficheiro</h3><p>Envie o ficheiro pronto a imprimir. PDF, AI ou JPEG de alta resolução.</p></div>
       </div>
       <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        <div class="howit-card-body"><h3>Produção</h3><p>3 dias úteis após confirmação do pagamento. Acompanhamento de qualidade em todo o processo.</p></div>
+        <div class="howit-card-body"><h3>Produção</h3><p>Pronto em 3 dias úteis após confirmação. Acompanhamento de qualidade em todo o processo.</p></div>
       </div>
       <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M13 16H3M13 6h3l3 4h2a1 1 0 011 1v4a1 1 0 01-1 1h-1"/></svg></div>
