@@ -1265,36 +1265,26 @@ function closeForm() {
 }
 function submitOrcForm(e) {
   e.preventDefault();
-  var fd = new FormData(e.target);
-  var lines = [
-    'PEDIDO DE ORÇAMENTO — TENDAS PARA EVENTOS',
-    '',
-    'CONTACTO',
-    'Nome: ' + fd.get('nome'),
-    'Email: ' + fd.get('email'),
-    'Telefone: ' + fd.get('telefone'),
-    'Empresa: ' + (fd.get('empresa') || 'N/A'),
-    '',
-    'TENDA',
-    'Tamanho: ' + fd.get('tamanho'),
-    'Tecido: ' + fd.get('tecido'),
-    'Quantidade: ' + fd.get('qtd_tendas'),
-    'Faces do topo: ' + fd.get('faces'),
-    '',
-    'ACESSÓRIOS',
-    'Paredes laterais: ' + fd.get('paredes'),
-    'Meias-paredes: ' + fd.get('meias_paredes'),
-    'Janela: ' + fd.get('janela'),
-    'Porta: ' + fd.get('porta'),
-    'Bases de carga: ' + fd.get('bases'),
-    '',
-    'NOTAS / ARTE',
-    fd.get('notas') || 'N/A',
-  ];
-  var subject = encodeURIComponent('Pedido de Orçamento – Tendas Para Eventos');
-  var body = encodeURIComponent(lines.join('\n'));
-  window.location.href = 'tendas_obrigado.html';
-  window.open('mailto:3lm@3lm.pt?subject=' + subject + '&body=' + body);
+  var btn = e.target.querySelector('.form-submit');
+  btn.disabled = true;
+  btn.textContent = 'A enviar…';
+
+  fetch('send-lead.php', { method: 'POST', body: new FormData(e.target) })
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if (data.ok) {
+        window.location.href = 'tendas_obrigado.html';
+      } else {
+        alert(data.error || 'Erro ao enviar. Tente novamente.');
+        btn.disabled = false;
+        btn.textContent = 'Enviar pedido de orçamento';
+      }
+    })
+    .catch(function(){
+      alert('Erro de ligação. Tente novamente.');
+      btn.disabled = false;
+      btn.textContent = 'Enviar pedido de orçamento';
+    });
 }
 </script>
 

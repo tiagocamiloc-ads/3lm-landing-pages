@@ -26,7 +26,7 @@ jobs:
 
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \
-            tendas.html tendas_obrigado.html \
+            tendas.html tendas_obrigado.html send-lead.php \
             "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
 
       - name: Verificar deploy
@@ -41,4 +41,4 @@ jobs:
             -p "$SSH_PORT" \
             -o StrictHostKeyChecking=no \
             "$SSH_USER@$SSH_HOST" \
-            "ls -lh $DEPLOY_PATH/tendas.html $DEPLOY_PATH/tendas_obrigado.html"
+            "ls -lh $DEPLOY_PATH/tendas.html $DEPLOY_PATH/tendas_obrigado.html $DEPLOY_PATH/send-lead.php"
