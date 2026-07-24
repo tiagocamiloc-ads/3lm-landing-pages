@@ -27,7 +27,7 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
         'Authorization: Bearer ' . SUPABASE_SERVICE_KEY,
         'Content-Type: application/json',
     ];
-    if ($httpMethod !== 'GET') $headers[] = 'Prefer: return=representation';
+    if ($httpMethod !== 'GET') $headers[] = 'Prefer: return=minimal';
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST  => $httpMethod,
@@ -91,7 +91,12 @@ if ($method === 'POST' && $action === 'update') {
     $patch = [];
     foreach ($allowed as $k) { if (array_key_exists($k, $data)) $patch[$k] = $data[$k]; }
     if (empty($patch)) { echo json_encode(['ok' => true]); exit; }
-    sb_request('leads_3lm?id=eq.' . urlencode($id), 'PATCH', json_encode($patch));
+    $r = sb_request('leads_3lm?id=eq.' . urlencode($id), 'PATCH', json_encode($patch));
+    if ($r['code'] >= 400) {
+        http_response_code(500);
+        echo json_encode(['ok' => false, 'error' => 'Supabase '.$r['code'].': '.$r['body']]);
+        exit;
+    }
     echo json_encode(['ok' => true]);
     exit;
 }
