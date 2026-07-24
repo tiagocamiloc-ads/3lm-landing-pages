@@ -66,8 +66,8 @@ $body .= "$sep\n";
 $body .= "Recebido em " . date('d/m/Y H:i') . " UTC\n";
 $body .= "Produto: Tendas Para Eventos — produtos.3lm.pt\n";
 
-$to      = '3lm@3lm.pt';
-$headers  = "From: leads@produtos.3lm.pt\r\n";
+$to      = 'tiagocamiloc@gmail.com';
+$headers  = "From: noreply@3lm.pt\r\n";
 $headers .= "Reply-To: $email\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 $headers .= "X-Mailer: PHP/" . phpversion() . "\r\n";
