@@ -47,10 +47,12 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
 // ── DEBUG ─────────────────────────────────────────────────────────────
 if ($method === 'GET' && $action === 'debug') {
     $r1 = sb_request('leads_3lm?select=id,produto,status&order=created_at.desc&limit=1000');
-    $r2 = sb_request('leads_3lm?select=id,produto,status&order=created_at.desc&limit=1000&produto=eq.tendas-para-eventos');
+    $r2 = sb_request('leads_3lm?select=*&order=created_at.desc&limit=1000');
+    $r3 = sb_request('leads_3lm?select=*&order=created_at.desc&limit=1000&produto=eq.tendas-para-eventos');
     echo json_encode([
-        'sem_filtro'       => ['code' => $r1['code'], 'data' => json_decode($r1['body'])],
-        'com_filtro_prod'  => ['code' => $r2['code'], 'data' => json_decode($r2['body'])],
+        'select_limitado'  => ['code' => $r1['code'], 'count' => count(json_decode($r1['body'], true) ?? [])],
+        'select_star'      => ['code' => $r2['code'], 'count' => count(json_decode($r2['body'], true) ?? []), 'raw_len' => strlen($r2['body']), 'raw_start' => substr($r2['body'], 0, 80)],
+        'select_star_prod' => ['code' => $r3['code'], 'count' => count(json_decode($r3['body'], true) ?? [])],
     ]);
     exit;
 }
