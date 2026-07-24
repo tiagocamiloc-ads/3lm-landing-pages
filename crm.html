@@ -182,8 +182,9 @@ function loadLeads() {
   if (st.statusFilter)  params.status  = st.statusFilter;
   if (st.produtoFilter) params.produto = st.produtoFilter;
   return api('list', params).then(function(d){
+    console.log('[CRM] loadLeads params:', JSON.stringify(params), '| resposta:', JSON.stringify(d));
     st.leads = Array.isArray(d) ? d : []; st.loading = false; render();
-  }).catch(function(){ st.loading = false; render(); });
+  }).catch(function(e){ console.error('[CRM] loadLeads erro:', e); st.loading = false; render(); });
 }
 
 function loadFunnel() {
