@@ -108,6 +108,8 @@ ul{list-style:none}
 .pdp-ti-txt{font-size:.78rem;color:var(--muted);line-height:1.3}
 .pdp-ti-txt strong{display:block;color:var(--text);font-size:.82rem}
 .pdp-guar{background:var(--red-lt);border:1px solid var(--red-bd);border-radius:8px;padding:12px 16px;font-size:.82rem;color:var(--text);display:flex;align-items:center;gap:10px}
+.pdp-promotron{display:flex;align-items:center;justify-content:center;margin-top:12px;padding:10px 16px;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
+.pdp-promotron img{max-height:44px;width:auto;object-fit:contain}
 .pdp-guar svg{width:20px;height:20px;color:var(--red);flex-shrink:0}
 
 /* TABS */
@@ -193,6 +195,12 @@ ul{list-style:none}
 .tp-desc{font-size:.8rem;color:var(--muted);margin-bottom:12px;line-height:1.5}
 .tp-price{font-weight:700;color:var(--red);font-size:.9rem;margin-bottom:12px}
 .tp-price-note{font-size:.72rem;color:var(--muted);font-weight:400}
+.tp-prices{margin-bottom:12px}
+.tp-price-row{display:flex;justify-content:space-between;align-items:baseline;font-size:.8rem;padding:3px 0;border-bottom:1px solid var(--border)}
+.tp-price-row:last-of-type{border-bottom:none}
+.tp-flabel{color:var(--muted);font-size:.75rem}
+.tp-price-row strong{color:var(--red);font-size:.86rem}
+.tp-pvat{font-size:.7rem;color:var(--muted);margin-top:4px}
 .tp-btn{display:block;text-align:center;background:var(--red);color:#fff;border-radius:var(--r);padding:10px;font-size:.82rem;font-weight:700;transition:background .18s}
 .tp-btn:hover{background:var(--red-dk)}
 
@@ -212,8 +220,8 @@ ul{list-style:none}
 .howit{background:var(--surface);padding:64px 20px;border-top:1px solid var(--border)}
 .howit-in{max-width:var(--max);margin:0 auto}
 .howit-hdr{text-align:center;margin-bottom:48px}
-.howit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;position:relative}
-.howit-line{position:absolute;top:24px;left:12.5%;right:12.5%;height:0;border-top:2px dashed #CBD5E1;z-index:0;pointer-events:none}
+.howit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;position:relative}
+.howit-line{position:absolute;top:24px;left:10%;right:10%;height:0;border-top:2px dashed #CBD5E1;z-index:0;pointer-events:none}
 .howit-step{display:flex;flex-direction:column;align-items:center;gap:16px;position:relative}
 .howit-num{width:48px;height:48px;border-radius:50%;background:var(--step-bg,var(--red));color:#fff;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 0 0 3px var(--step-bg,var(--red));position:relative;z-index:2;flex-shrink:0}
 .howit-num svg{width:22px;height:22px;color:#fff;stroke:#fff}
@@ -225,6 +233,7 @@ ul{list-style:none}
 .howit-step:nth-child(3){--step-bg:#1565C0}
 .howit-step:nth-child(4){--step-bg:#D97706}
 .howit-step:nth-child(5){--step-bg:#16A34A}
+.howit-step:nth-child(6){--step-bg:#0891B2}
 .howit-proof{text-align:center;margin-top:40px;padding-top:32px;border-top:1px solid var(--border)}
 .howit-pill{display:inline-flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);padding:12px 24px;border-radius:100px;font-size:.85rem;font-weight:600}
 .howit-pill span{color:var(--gold);font-size:.9rem;letter-spacing:1px}
@@ -476,7 +485,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
 </head>
 <body>
 
-<div class="urgency">Prazo de produção: 7-10 dias úteis após confirmação.<a href="#" onclick="openForm();return false;">Pedir orçamento</a></div>
+<div class="urgency">Prazo de produção: 3 dias úteis + transporte, após confirmação do pagamento.<a href="#" onclick="openForm();return false;">Pedir orçamento</a></div>
 
 <nav class="nav">
   <div class="nav-in">
@@ -531,7 +540,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       <span class="pdp-fab-lbl">Tecido:</span>
       <div class="pdp-fab-opts">
         <button class="fab-btn active" onclick="selectFabric('banner',this)">
-          <span class="fab-btn-name">Banner 115g</span>
+          <span class="fab-btn-name">Bandeira 115g</span>
           <span class="fab-btn-desc">Leve e compacto, para interiores e eventos pontuais</span>
         </button>
         <button class="fab-btn" onclick="selectFabric('imperm',this)">
@@ -555,6 +564,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
           <span class="pdp-sz-price" id="szPrice">257€ + IVA</span>
         </div>
         <p class="pdp-sz-desc" id="szDesc">Compacta, fácil colocação em espaços reduzidos</p>
+        <p class="pdp-sz-desc" style="margin-top:4px;font-size:.76rem;color:var(--muted)">Altura: 1,90 m em todos os tamanhos</p>
       </div>
     </div>
 
@@ -563,13 +573,16 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
 
     <div class="pdp-trust">
       <div class="pdp-ti"><div class="pdp-ti-ico">🖨️</div><div class="pdp-ti-txt"><strong>Impressão incluída</strong>full-color, sem limite de cores</div></div>
-      <div class="pdp-ti"><div class="pdp-ti-ico">🚀</div><div class="pdp-ti-txt"><strong>Produção 7-10 dias</strong>úteis após confirmação</div></div>
+      <div class="pdp-ti"><div class="pdp-ti-ico">🚀</div><div class="pdp-ti-txt"><strong>Produção 3 dias úteis</strong>após confirmação do pagamento</div></div>
       <div class="pdp-ti"><div class="pdp-ti-ico">💧</div><div class="pdp-ti-txt"><strong>Tecido resistente</strong>à água, ao ar e à cor</div></div>
-      <div class="pdp-ti"><div class="pdp-ti-ico">🇵🇹</div><div class="pdp-ti-txt"><strong>Feito em Portugal</strong>entrega em toda a Península</div></div>
+      <div class="pdp-ti"><div class="pdp-ti-ico">📦</div><div class="pdp-ti-txt"><strong>Entrega rastreável</strong>Portugal, ilhas e Espanha</div></div>
     </div>
     <div class="pdp-guar">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
       <span>Se a impressão não corresponder ao ficheiro enviado, refazemos sem qualquer custo.</span>
+    </div>
+    <div class="pdp-promotron">
+      <img src="https://portal.promotron.com/api/services/tronshop/pt-3lmpromo/references/a8faa1c6-4ae7-4442-b8bd-4aa0c7496915.png" alt="Promotron — Referência certificada" loading="lazy">
     </div>
   </div>
 </div>
@@ -583,10 +596,10 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
   </div>
   <div class="pdp-tab-c" id="tab-desc">
     <div class="pdp-desc">
-      <p>As tendas de arco 3LM são estruturas publicitárias personalizadas com impressão full-color incluída no preço. Disponíveis em quatro tamanhos, adaptam-se a qualquer contexto de presença de marca: feiras, mercados, eventos corporativos e ativações ao ar livre.</p>
+      <p>As tendas de arco 3LM são estruturas publicitárias personalizadas com impressão full-color incluída no preço. Disponíveis em quatro tamanhos (1,5×1,5 m, 3×3 m, 3×4,5 m e 3×6 m), todos com 1,90 m de altura, adaptam-se a qualquer contexto de presença de marca: feiras, mercados, eventos corporativos e ativações ao ar livre.</p>
       <div class="pdp-pullquote">Ideal para marcas que precisam de presença física rápida, visível e personalizável.</div>
       <p>O tecido não perde a cor, é lavável e resistente à água e ao ar. A impressão é feita de um lado, com possibilidade de colocar o tecido tanto no interior como no exterior da tenda, graças ao velcro na parte superior em ambos os lados da parede. O topo pode ter todas as faces diferentes.</p>
-      <p>Dois tipos de tecido disponíveis: Banner 115g para eventos interiores e pontuais, e Impermeável 180g para utilização prolongada ao ar livre.</p>
+      <p>Dois tipos de tecido disponíveis: Bandeira 115g para eventos interiores e pontuais, e Impermeável 180g para maior resistência à água em utilização ao ar livre. Nenhum tecido é completamente impermeável; para condições de chuva intensa, recomendamos o Impermeável 180g.</p>
       <h3>Acessórios disponíveis</h3>
       <p>Para além da cobertura principal, é possível encomendar paredes laterais, meias-paredes, janelas e portas. Todos os acessórios fixam por velcro e são compatíveis com qualquer tamanho de tenda 3LM. Disponíveis nos dois tecidos.</p>
     </div>
@@ -609,8 +622,9 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
   </div>
   <div class="pdp-tab-c" id="tab-del">
     <div class="del-row"><div class="del-ico">📝</div><div class="del-body"><h4>Pedido e orçamento</h4><p>Preenche o formulário com as dimensões e detalhes. A equipa 3LM responde com orçamento em menos de 24 horas úteis.</p></div></div>
-    <div class="del-row"><div class="del-ico">📂</div><div class="del-body"><h4>Ficheiro de impressão</h4><p>Envie o ficheiro pronto a imprimir após confirmação da encomenda. A impressão é de um lado do tecido. O topo pode ter todas as faces diferentes.</p></div></div>
-    <div class="del-row"><div class="del-ico">🏭</div><div class="del-body"><h4>Produção nacional</h4><p>7 a 10 dias úteis após a aprovação final. Fabricamos e imprimimos em Portugal.</p></div></div>
+    <div class="del-row"><div class="del-ico">💳</div><div class="del-body"><h4>Confirmação de pagamento</h4><p>A produção só avança após confirmação do pagamento na entidade bancária. Sem este passo, a encomenda fica em espera.</p></div></div>
+    <div class="del-row"><div class="del-ico">📂</div><div class="del-body"><h4>Ficheiro de impressão</h4><p>Envie o ficheiro pronto a imprimir após confirmação do pagamento. A impressão é de um lado do tecido. O topo pode ter todas as faces diferentes.</p></div></div>
+    <div class="del-row"><div class="del-ico">🏭</div><div class="del-body"><h4>Produção</h4><p>3 dias úteis após confirmação do pagamento. Acompanhamento de qualidade em todo o processo.</p></div></div>
     <div class="del-row"><div class="del-ico">📦</div><div class="del-body"><h4>Envio rastreável</h4><p>Enviamos por transportadora para Portugal continental e ilhas. Espanha e resto da Europa com prazo adicional.</p></div></div>
   </div>
 </div>
@@ -667,8 +681,8 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
         <img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/2876b499-caaf-452f-965e-9ae58697f762.jpeg"
              alt="Tenda 3LM personalizada em evento ao ar livre" loading="lazy">
         <div class="ben-caption">
-          <strong>Feito em Portugal</strong>
-          <span>Produção nacional. Sem intermediários, sem surpresas na entrega.</span>
+          <strong>Entrega em toda a Península</strong>
+          <span>Portugal continental, ilhas e Espanha. Transporte rastreável.</span>
         </div>
       </div>
 
@@ -735,7 +749,11 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
         <div class="tp-body">
           <div class="tp-size">1,5 × 1,5 m</div>
           <p class="tp-desc">Compacta, fácil colocação em espaços reduzidos</p>
-          <div class="tp-price">A partir de 257€ <span class="tp-price-note">+ IVA</span></div>
+          <div class="tp-prices">
+            <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>257€</strong></div>
+            <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>385€</strong></div>
+            <div class="tp-pvat">+ IVA · impressão incluída</div>
+          </div>
           <a href="#" onclick="openForm('1,5 × 1,5 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
       </div>
@@ -744,7 +762,11 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
         <div class="tp-body">
           <div class="tp-size">3 × 3 m</div>
           <p class="tp-desc">Formato versátil para eventos, feiras e ativações</p>
-          <div class="tp-price">A partir de 368€ <span class="tp-price-note">+ IVA</span></div>
+          <div class="tp-prices">
+            <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>368€</strong></div>
+            <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>522€</strong></div>
+            <div class="tp-pvat">+ IVA · impressão incluída</div>
+          </div>
           <a href="#" onclick="openForm('3 × 3 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
       </div>
@@ -753,7 +775,11 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
         <div class="tp-body">
           <div class="tp-size">3 × 4,5 m</div>
           <p class="tp-desc">Mais espaço para equipas, produtos e atendimento</p>
-          <div class="tp-price">A partir de 475€ <span class="tp-price-note">+ IVA</span></div>
+          <div class="tp-prices">
+            <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>475€</strong></div>
+            <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>698€</strong></div>
+            <div class="tp-pvat">+ IVA · impressão incluída</div>
+          </div>
           <a href="#" onclick="openForm('3 × 4,5 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
       </div>
@@ -762,7 +788,11 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
         <div class="tp-body">
           <div class="tp-size">3 × 6 m</div>
           <p class="tp-desc">Maior presença e área útil disponível</p>
-          <div class="tp-price">A partir de 614€ <span class="tp-price-note">+ IVA</span></div>
+          <div class="tp-prices">
+            <div class="tp-price-row"><span class="tp-flabel">Bandeira 115g</span><strong>614€</strong></div>
+            <div class="tp-price-row"><span class="tp-flabel">Impermeável 180g</span><strong>922€</strong></div>
+            <div class="tp-pvat">+ IVA · impressão incluída</div>
+          </div>
           <a href="#" onclick="openForm('3 × 6 m');return false;" class="tp-btn">Pedir orçamento</a>
         </div>
       </div>
@@ -781,7 +811,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
     <div style="overflow-x:auto">
       <table class="price-tbl">
         <caption>Tenda completa (estrutura + impressão)</caption>
-        <thead><tr><th>Tamanho</th><th>Banner 115g</th><th>Impermeável 180g</th></tr></thead>
+        <thead><tr><th>Tamanho</th><th>Bandeira 115g</th><th>Impermeável 180g</th></tr></thead>
         <tbody>
           <tr><td>1,5 × 1,5 m</td><td class="col-red">257€</td><td>385€</td></tr>
           <tr><td>3 × 3 m</td><td class="col-red">368€</td><td>522€</td></tr>
@@ -790,30 +820,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
         </tbody>
       </table>
     </div>
-    <div style="overflow-x:auto">
-      <table class="price-tbl">
-        <caption>Paredes laterais (por parede)</caption>
-        <thead><tr><th>Tamanho</th><th>Banner 115g</th><th>Impermeável 180g</th></tr></thead>
-        <tbody>
-          <tr><td>1,5 × 1,5 m</td><td>54€</td><td>69€</td></tr>
-          <tr><td>3 × 3 m</td><td>97€</td><td>123€</td></tr>
-          <tr><td>3 × 4,5 m</td><td>123€</td><td>171€</td></tr>
-          <tr><td>3 × 6 m</td><td>158€</td><td>238€</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div style="overflow-x:auto">
-      <table class="price-tbl">
-        <caption>Meias-paredes (por parede)</caption>
-        <thead><tr><th>Tamanho</th><th>Banner 115g</th><th>Impermeável 180g</th></tr></thead>
-        <tbody>
-          <tr><td>3 × 3 m</td><td>65€</td><td>78€</td></tr>
-          <tr><td>3 × 4,5 m</td><td>83€</td><td>109€</td></tr>
-          <tr><td>3 × 6 m</td><td>78€</td><td>118€</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="pt-note">Janelas e portas disponíveis apenas em tecido impermeável. Consulte preço. IVA não incluído.</p>
+    <p class="pt-note">Paredes laterais, meias-paredes, janelas e portas: consulte preço no pedido de orçamento. IVA não incluído nos valores acima.</p>
   </div>
 </section>
 
@@ -823,7 +830,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
     <div class="howit-hdr">
       <div class="s-eye">Como funciona</div>
       <h2 class="s-title">Da encomenda ao evento</h2>
-      <p class="s-sub cx">Quatro passos, sem complicações e sem surpresas no orçamento final.</p>
+      <p class="s-sub cx">Cinco passos, sem complicações e sem surpresas no orçamento final.</p>
     </div>
     <div class="howit-grid">
       <div class="howit-line"></div>
@@ -832,12 +839,16 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
         <div class="howit-card-body"><h3>Pede orçamento</h3><p>Preenche o formulário com o tamanho e notas. Resposta em 24 horas úteis.</p></div>
       </div>
       <div class="howit-step">
+        <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" stroke-linecap="round" stroke-linejoin="round"/><path stroke-linecap="round" stroke-linejoin="round" d="M1 10h22"/></svg></div>
+        <div class="howit-card-body"><h3>Pagamento confirmado</h3><p>Só após confirmação do pagamento na entidade bancária é que a produção avança.</p></div>
+      </div>
+      <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg></div>
-        <div class="howit-card-body"><h3>Envia o ficheiro</h3><p>Envie o ficheiro pronto a imprimir após confirmação da encomenda. PDF, AI ou JPEG de alta resolução.</p></div>
+        <div class="howit-card-body"><h3>Envia o ficheiro</h3><p>Envie o ficheiro pronto a imprimir após confirmação do pagamento. PDF, AI ou JPEG de alta resolução.</p></div>
       </div>
       <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        <div class="howit-card-body"><h3>Produção em Portugal</h3><p>7 a 10 dias úteis após confirmação da encomenda. Fabricamos e imprimimos em Portugal.</p></div>
+        <div class="howit-card-body"><h3>Produção</h3><p>3 dias úteis após confirmação do pagamento. Acompanhamento de qualidade em todo o processo.</p></div>
       </div>
       <div class="howit-step">
         <div class="howit-num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zm10 0a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M13 16H3M13 6h3l3 4h2a1 1 0 011 1v4a1 1 0 01-1 1h-1"/></svg></div>
@@ -881,11 +892,11 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       </div>
       <div class="acc-card">
         <div class="acc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/8b04127b-3072-4eb2-bc14-c87b6a57e87b.png" alt="Janela"></div>
-        <div class="acc-body"><h3>Janela</h3><p>Integra numa parede lateral para manter visibilidade com a parede fechada. Tecido impermeável.</p><div class="acc-price">Consulte preço</div></div>
+        <div class="acc-body"><h3>Janela</h3><p>Integra numa parede lateral para manter visibilidade com a parede fechada. Alta resistência à água.</p><div class="acc-price">Consulte preço</div></div>
       </div>
       <div class="acc-card">
         <div class="acc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/1dc323d3-f91f-4179-ad9f-9bea57930361.png" alt="Porta"></div>
-        <div class="acc-body"><h3>Porta</h3><p>Acesso controlado ao espaço da tenda. Integra nas paredes laterais, tecido impermeável.</p><div class="acc-price">Consulte preço</div></div>
+        <div class="acc-body"><h3>Porta</h3><p>Acesso controlado ao espaço da tenda. Integra nas paredes laterais, alta resistência à água.</p><div class="acc-price">Consulte preço</div></div>
       </div>
     </div>
 
@@ -934,12 +945,12 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       </div>
       <div class="whyus-stat">
         <div class="ws-num">100%</div>
-        <div class="ws-lbl">produção nacional</div>
+        <div class="ws-lbl">impressão incluída no preço</div>
       </div>
     </div>
         <div class="why-grid">
-      <div class="why-card"><h3><em>↑</em>Qualidade sem compromisso no preço</h3><p>Produção nacional com controlo de qualidade direto. Sem intermediários, sem surpresas. O preço que vês inclui sempre a impressão completa.</p></div>
-      <div class="why-card"><h3><em>⏱</em>Prazo real, não prazo comercial</h3><p>7-10 dias úteis após confirmação da encomenda. Não prometemos prazos impossíveis para fechar encomendas. Se houver algum imprevisto, avisamos antes de atrasar.</p></div>
+      <div class="why-card"><h3><em>↑</em>Qualidade sem compromisso no preço</h3><p>Controlo de qualidade direto em todo o processo. Sem intermediários, sem surpresas. O preço que vês inclui sempre a impressão completa.</p></div>
+      <div class="why-card"><h3><em>⏱</em>Prazo real, não prazo comercial</h3><p>3 dias úteis após confirmação do pagamento. Não prometemos prazos impossíveis para fechar encomendas. Se houver algum imprevisto, avisamos antes de atrasar.</p></div>
       <div class="why-card"><h3><em>🎨</em>Impressão sem limite de cores</h3><p>Qualquer design, qualquer paleta, qualquer degradé. A impressão full-color está sempre incluída no preço base, sem suplemento por cores.</p></div>
       <div class="why-card"><h3><em>🤝</em>Suporte depois da entrega</h3><p>Impressão com problema? Entre em contacto connosco, enviamos fotografias, resolvemos. Se a impressão não corresponder ao ficheiro enviado, refazemos sem qualquer custo.</p></div>
     </div>
@@ -956,7 +967,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
     </div>
     <div class="uc-grid">
       <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/a4359d11-8df0-4eba-a573-8d8002d9d38f.jpeg" alt="Tenda 3LM em evento"></div><div class="uc-body"><h3>Feiras e exposições</h3><p>Em pavilhões com dezenas de stands, a tenda define o espaço da marca sem depender da estrutura do organizador.</p></div></div>
-      <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/4ff1c2f2-3465-420c-81c0-1a9616dd3d9b.jpeg" alt="Tenda 3LM ao ar livre"></div><div class="uc-body"><h3>Eventos ao ar livre</h3><p>Festivais, corridas, mercados. O tecido impermeável protege produtos e equipa durante o evento.</p></div></div>
+      <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/4ff1c2f2-3465-420c-81c0-1a9616dd3d9b.jpeg" alt="Tenda 3LM ao ar livre"></div><div class="uc-body"><h3>Eventos ao ar livre</h3><p>Festivais, corridas, mercados. O tecido Impermeável 180g protege produtos e equipa em condições de chuva moderada.</p></div></div>
       <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/2876b499-caaf-452f-965e-9ae58697f762.jpeg" alt="Ativação de marca com tenda 3LM"></div><div class="uc-body"><h3>Ativações de marca</h3><p>Demos, degustações, pontos de contacto. A tenda cria um ambiente de marca em qualquer ponto de tráfego.</p></div></div>
       <div class="uc-card"><div class="uc-img"><img src="https://cdn-ts-westeu.promotte.com/api/services/tronshop/pt-3lmpromo/marketing/9f08ed72-6834-4da4-8bcb-8201080f2874.jpeg" alt="Stand com tenda 3LM"></div><div class="uc-body"><h3>Pontos de venda outdoor</h3><p>Com paredes laterais e bases de carga, a tenda transforma-se num espaço de atendimento completo.</p></div></div>
     </div>
@@ -1019,10 +1030,10 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       <h2 class="s-title">Perguntas frequentes</h2>
     </div>
     <div class="faq-list">
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quanto tempo demora a produção?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">7 a 10 dias úteis após a confirmação da encomenda. O envio adiciona 1 a 2 dias para Portugal continental e mais tempo para as ilhas e Espanha.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quanto tempo demora a produção?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">3 dias úteis após confirmação do pagamento. A isso acresce o tempo de transporte: 1 a 2 dias para Portugal continental e mais tempo para as ilhas e Espanha.</div></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Como devo preparar o ficheiro para impressão?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">O ficheiro deve estar pronto a imprimir (PDF, AI ou JPEG de alta resolução). A impressão é feita de um lado do tecido. O topo pode ter todas as faces com impressões diferentes.</div></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Qual a diferença entre Banner 115g e Impermeável 180g?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">O Banner 115g é mais leve e compacto, adequado para eventos interiores e utilização pontual ao ar livre. O Impermeável 180g tem maior resistência à água e é recomendado para utilização prolongada ao ar livre ou em condições climáticas mais exigentes.</div></div></div>
-      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quais são os tamanhos disponíveis?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">1,5 × 1,5 m (a partir de 257€ + IVA em Banner), 3 × 3 m (a partir de 368€ + IVA), 3 × 4,5 m (a partir de 475€ + IVA) e 3 × 6 m (a partir de 614€ + IVA). Preços para tecido Impermeável 180g são diferentes. Consulte a tabela de preços.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Qual a diferença entre Bandeira 115g e Impermeável 180g?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">O Bandeira 115g é mais leve e compacto, adequado para eventos interiores e utilização pontual ao ar livre. O Impermeável 180g tem maior resistência à água e é recomendado para utilização ao ar livre. Nenhum dos tecidos é completamente impermeável; em condições de chuva intensa, recomendamos proteção adicional.</div></div></div>
+      <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Quais são os tamanhos disponíveis?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">1,5 × 1,5 m, 3 × 3 m, 3 × 4,5 m e 3 × 6 m, todos com 1,90 m de altura. Os preços variam consoante o tecido (Bandeira 115g ou Impermeável 180g). Consulte a tabela de preços acima.</div></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">O que acontece se a impressão tiver algum defeito?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">Se a impressão não corresponder ao ficheiro enviado, refazemos a peça sem qualquer custo. Basta enviar fotografias do problema no prazo de 30 dias após a entrega.</div></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso colocar o tecido nos dois lados da tenda?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">Sim. Graças ao velcro na parte superior em ambos os lados da parede, pode colocar o tecido tanto no interior como no exterior da tenda, sem alterar a estrutura.</div></div></div>
       <div class="faq-item"><button class="faq-q" onclick="toggleFaq(this)">Posso encomendar acessórios depois?<span class="faq-ico">+</span></button><div class="faq-a"><div class="faq-a-in">Sim. Paredes laterais, meias-paredes, janelas, portas e bases de carga são compatíveis com todos os tamanhos e podem ser encomendados separadamente a qualquer momento.</div></div></div>
@@ -1035,7 +1046,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
   <h2>Marque presença no próximo evento</h2>
   <p class="ctafinal-q">"Excelente experiência com a 3 LM. Todo o processo, desde o pedido até à entrega, decorreu de forma irrepreensível, com elevado profissionalismo, organização e eficiência." Joana Patrícia, Google</p>
   <a href="#" onclick="openForm();return false;" class="ctafinal-btn">Pedir Orçamento Gratuito</a>
-  <div class="ctafinal-proof">★★★★☆ 4,0 no Google &nbsp;·&nbsp; Impressão incluída &nbsp;·&nbsp; Produção nacional &nbsp;·&nbsp; Entrega rastreável</div>
+  <div class="ctafinal-proof">★★★★☆ 4,0 no Google &nbsp;·&nbsp; Impressão incluída &nbsp;·&nbsp; Produção 3 dias úteis &nbsp;·&nbsp; Entrega rastreável</div>
 </section>
 
 <!-- FOOTER -->
@@ -1043,7 +1054,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
   <div class="ft-in">
     <div class="ft-trust">
       <div class="ft-ti"><span>🖨️</span>Impressão incluída</div>
-      <div class="ft-ti"><span>🇵🇹</span>Produção nacional</div>
+      <div class="ft-ti"><span>🚀</span>Produção 3 dias úteis</div>
       <div class="ft-ti"><span>📦</span>Envio rastreável</div>
       <div class="ft-ti"><span>💧</span>Tecido resistente à água</div>
       <div class="ft-ti"><span>⭐</span>4,0 · 34 avaliações Google</div>
@@ -1052,7 +1063,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       <div class="ft-brand">
         <div class="ft-logo">3LM</div>
         <p class="ft-company">3LM Publicidade e Imagem, Unip. Lda</p>
-        <p>Materiais de comunicação para eventos e espaços comerciais. Produção nacional, entrega em toda a Península Ibérica.</p>
+        <p>Materiais de comunicação para eventos e espaços comerciais. Entrega em toda a Península Ibérica.</p>
         <br>
         <p>Rua 4 de Julho, Arm. 10<br>3025-010 Pedrulha, Coimbra</p>
         <br>
@@ -1092,7 +1103,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
     </div>
     <div class="ft-btm">
       <span>© 2026 3LM Publicidade e Imagem, Unip. Lda. Todos os direitos reservados.</span>
-      <span>IVA não incluído nos preços indicados · Produção em Portugal</span>
+      <span>IVA não incluído nos preços indicados</span>
     </div>
   </div>
 </footer>
@@ -1133,17 +1144,17 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
           <label>Tamanho</label>
           <select name="tamanho" id="formSize">
             <option value="Não sei ainda">Não sei ainda</option>
-            <option value="1,5 × 1,5 m — 257€ Banner / 385€ Impermeável">1,5 × 1,5 m (a partir de 257€)</option>
-            <option value="3 × 3 m — 368€ Banner / 522€ Impermeável">3 × 3 m (a partir de 368€)</option>
-            <option value="3 × 4,5 m — 475€ Banner / 698€ Impermeável">3 × 4,5 m (a partir de 475€)</option>
-            <option value="3 × 6 m — 614€ Banner / 922€ Impermeável">3 × 6 m (a partir de 614€)</option>
+            <option value="1,5 × 1,5 m — 257€ Bandeira / 385€ Impermeável">1,5 × 1,5 m (a partir de 257€)</option>
+            <option value="3 × 3 m — 368€ Bandeira / 522€ Impermeável">3 × 3 m (a partir de 368€)</option>
+            <option value="3 × 4,5 m — 475€ Bandeira / 698€ Impermeável">3 × 4,5 m (a partir de 475€)</option>
+            <option value="3 × 6 m — 614€ Bandeira / 922€ Impermeável">3 × 6 m (a partir de 614€)</option>
           </select>
         </div>
         <div class="form-group">
           <label>Tecido</label>
           <select name="tecido" id="formFabric">
             <option value="Não sei ainda">Não sei ainda</option>
-            <option value="Banner 115g (poliéster 115g/m²)">Banner 115g — interior e eventos pontuais</option>
+            <option value="Bandeira 115g (poliéster 115g/m²)">Bandeira 115g — interior e eventos pontuais</option>
             <option value="Impermeável 180g (poliéster 180g/m²)">Impermeável 180g — exterior e chuva</option>
           </select>
         </div>
