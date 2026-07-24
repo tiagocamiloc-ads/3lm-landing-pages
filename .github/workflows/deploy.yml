@@ -13,13 +13,14 @@ jobs:
 
       - name: Deploy via rsync
         env:
-          SSH_KEY:            ${{ secrets.DEPLOY_SSH_KEY }}
-          SSH_HOST:           ${{ secrets.DEPLOY_HOST }}
-          SSH_USER:           ${{ secrets.DEPLOY_USER }}
-          SSH_PORT:           ${{ secrets.DEPLOY_PORT }}
-          DEPLOY_PATH:        ${{ secrets.DEPLOY_PATH }}
-          SUPABASE_URL:       ${{ secrets.SUPABASE_URL }}
+          SSH_KEY:              ${{ secrets.DEPLOY_SSH_KEY }}
+          SSH_HOST:             ${{ secrets.DEPLOY_HOST }}
+          SSH_USER:             ${{ secrets.DEPLOY_USER }}
+          SSH_PORT:             ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_PATH:          ${{ secrets.DEPLOY_PATH }}
+          SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+          CRM_PASSWORD:         ${{ secrets.CRM_PASSWORD }}
         run: |
           mkdir -p ~/.ssh
           echo "$SSH_KEY" > ~/.ssh/deploy_key
@@ -27,15 +28,12 @@ jobs:
           ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
           # Generate config.php from secrets (never committed to repo)
-          cat > config.php <<EOF
-          <?php
-          define('SUPABASE_URL',         '$SUPABASE_URL');
-          define('SUPABASE_SERVICE_KEY', '$SUPABASE_SERVICE_KEY');
-          EOF
+          printf '<?php\ndefine("SUPABASE_URL", "%s");\ndefine("SUPABASE_SERVICE_KEY", "%s");\ndefine("CRM_PASSWORD", "%s");\n' \
+            "$SUPABASE_URL" "$SUPABASE_SERVICE_KEY" "$CRM_PASSWORD" > config.php
 
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \
-            tendas.html tendas_obrigado.html send-lead.php config.php \
+            tendas.html tendas_obrigado.html send-lead.php crm-api.php crm.html config.php \
             "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
 
       - name: Verificar deploy
@@ -50,4 +48,4 @@ jobs:
             -p "$SSH_PORT" \
             -o StrictHostKeyChecking=no \
             "$SSH_USER@$SSH_HOST" \
-            "ls -lh $DEPLOY_PATH/tendas.html $DEPLOY_PATH/tendas_obrigado.html $DEPLOY_PATH/send-lead.php"
+            "ls -lh $DEPLOY_PATH/tendas.html $DEPLOY_PATH/send-lead.php $DEPLOY_PATH/crm.html $DEPLOY_PATH/crm-api.php"

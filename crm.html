@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM Leads | 3LM</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#0e0e11;
+  --surface:#17171c;
+  --surface2:#1e1e24;
+  --border:#28282f;
+  --text:#e0e0ea;
+  --muted:#7a7a88;
+  --accent:#4f7fff;
+  --s-por:#6b7280;   --s-por-bg:#6b728018;
+  --s-con:#60a5fa;   --s-con-bg:#60a5fa18;
+  --s-orc:#fbbf24;   --s-orc-bg:#fbbf2418;
+  --s-ok:#34d399;    --s-ok-bg:#34d39918;
+  --s-per:#f87171;   --s-per-bg:#f8717118;
+  --s-nd:#9ca3af;    --s-nd-bg:#9ca3af18;
+}
+@media(prefers-color-scheme:light){
+  :root{
+    --bg:#f2f2f5;--surface:#ffffff;--surface2:#ebebef;
+    --border:#dedee6;--text:#18181f;--muted:#88889a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e0e11;--surface:#17171c;--surface2:#1e1e24;
+  --border:#28282f;--text:#e0e0ea;--muted:#7a7a88;
+}
+:root[data-theme="light"]{
+  --bg:#f2f2f5;--surface:#ffffff;--surface2:#ebebef;
+  --border:#dedee6;--text:#18181f;--muted:#88889a;
+}
+
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+
+/* ── Login ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:40px;width:100%;max-width:360px}
+.login-logo{font-size:20px;font-weight:700;letter-spacing:-0.5px;margin-bottom:6px}
+.login-logo span{color:var(--accent)}
+.login-sub{color:var(--muted);font-size:13px;margin-bottom:32px}
+
+/* ── Forms ── */
+label{display:block;font-size:11px;font-weight:600;color:var(--muted);
+  margin-bottom:6px;letter-spacing:0.5px;text-transform:uppercase}
+input,textarea,select{width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:10px 12px;color:var(--text);font-size:14px;
+  font-family:inherit;outline:none;transition:border-color .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:90px}
+.form-group{margin-bottom:16px}
+
+button{cursor:pointer;font-family:inherit;font-size:14px;border:none;
+  border-radius:8px;padding:10px 16px;transition:opacity .15s,background .15s}
+button:hover{opacity:.85}
+button:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--accent);color:#fff;width:100%;font-weight:600;padding:12px}
+.btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.btn-sm{padding:5px 12px;font-size:13px}
+.error-msg{color:#f87171;font-size:13px;margin-top:10px;min-height:18px}
+
+/* ── Shell ── */
+#app-shell{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:20px;padding:0 20px;height:52px;
+  position:sticky;top:0;z-index:10}
+.topbar-brand{font-weight:700;font-size:15px;letter-spacing:-0.3px;flex-shrink:0}
+.topbar-brand span{color:var(--accent)}
+.topbar-nav{display:flex;gap:2px}
+.nav-btn{background:transparent;color:var(--muted);border-radius:6px;
+  padding:6px 12px;font-size:13px;font-weight:500}
+.nav-btn.active{background:var(--surface2);color:var(--text)}
+.topbar-actions{margin-left:auto}
+.content{flex:1;padding:24px 20px;max-width:1100px;margin:0 auto;width:100%}
+
+/* ── Badge ── */
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;
+  font-size:12px;font-weight:500;white-space:nowrap}
+
+/* ── Leads list ── */
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.page-title{font-size:18px;font-weight:700}
+.page-sub{color:var(--muted);font-size:12px;margin-top:3px}
+.status-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.tab-btn{background:var(--surface2);color:var(--muted);border-radius:20px;
+  padding:5px 12px;font-size:12px;font-weight:500}
+.tab-btn.active{color:var(--text);border:1px solid var(--border)}
+
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.leads-table{width:100%;border-collapse:collapse}
+.leads-table th{padding:9px 14px;text-align:left;font-size:11px;font-weight:600;
+  color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;
+  border-bottom:1px solid var(--border);background:var(--surface2)}
+.leads-table td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px}
+.leads-table tr:last-child td{border-bottom:none}
+.leads-table tbody tr{cursor:pointer;transition:background .1s}
+.leads-table tbody tr:hover{background:var(--surface2)}
+.lead-name{font-weight:500}
+.lead-company{color:var(--muted);font-size:12px;margin-top:1px}
+.lead-date{color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.utm-chip{font-size:11px;background:var(--surface2);border:1px solid var(--border);
+  border-radius:4px;padding:1px 6px;color:var(--muted)}
+
+.empty-state{padding:56px 24px;text-align:center;color:var(--muted)}
+.loading{display:flex;align-items:center;justify-content:center;
+  padding:56px;color:var(--muted);font-size:13px}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);
+  border-radius:50%;animation:spin .7s linear infinite;margin-right:10px;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── Funnel ── */
+.funnel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:12px;margin-bottom:20px}
+.funnel-card{background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:16px}
+.funnel-count{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;
+  line-height:1;margin-bottom:4px}
+.funnel-label{font-size:12px;color:var(--muted)}
+.funnel-bars{background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:20px}
+.funnel-bars-title{font-size:13px;font-weight:600;margin-bottom:16px}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.bar-label{width:150px;font-size:12px;color:var(--muted);flex-shrink:0}
+.bar-track{flex:1;background:var(--surface2);border-radius:4px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.bar-count{font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;
+  min-width:24px;text-align:right}
+
+/* ── Detail ── */
+.detail-back{display:inline-flex;align-items:center;gap:5px;color:var(--muted);
+  font-size:13px;cursor:pointer;background:none;border:none;padding:0;margin-bottom:20px}
+.detail-back:hover{color:var(--text);opacity:1}
+.detail-header{display:flex;justify-content:space-between;align-items:flex-start;
+  gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.detail-name{font-size:22px;font-weight:700}
+.detail-company{color:var(--muted);font-size:14px;margin-top:2px}
+.detail-meta{font-size:12px;color:var(--muted);margin-top:4px}
+
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.detail-section{background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:16px}
+.detail-section-title{font-size:11px;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px}
+.detail-field{display:flex;gap:8px;margin-bottom:8px;font-size:13px}
+.detail-field:last-child{margin-bottom:0}
+.df-label{color:var(--muted);min-width:110px;flex-shrink:0}
+.df-value{font-weight:500;word-break:break-word}
+
+.status-picker{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.s-opt{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:500;
+  border:2px solid transparent;cursor:pointer;opacity:0.45;transition:opacity .15s,border-color .15s}
+.s-opt.sel{opacity:1;border-color:currentColor}
+.s-opt:not(.sel):hover{opacity:.7}
+
+.notes-indicator{font-size:11px;color:var(--muted);margin-top:6px;height:16px}
+.notes-indicator.saving{color:var(--accent)}
+.notes-indicator.saved{color:#34d399}
+
+@media(max-width:640px){
+  .topbar{padding:0 12px;gap:12px}
+  .content{padding:16px 12px}
+  .detail-grid{grid-template-columns:1fr}
+  .leads-table th:nth-child(3),.leads-table td:nth-child(3){display:none}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+'use strict';
+
+var API = '/crm-api.php';
+
+var STATUS = {
+  por_contatar:      {label:'Por contatar',     color:'#6b7280',bg:'#6b728018'},
+  contatada:         {label:'Contatada',         color:'#60a5fa',bg:'#60a5fa18'},
+  orcamento_enviado: {label:'Orçamento enviado', color:'#fbbf24',bg:'#fbbf2418'},
+  confirmada:        {label:'Confirmada',        color:'#34d399',bg:'#34d39918'},
+  perdida:           {label:'Perdida',           color:'#f87171',bg:'#f8717118'},
+  nao_disponivel:    {label:'Não disponível',    color:'#9ca3af',bg:'#9ca3af18'},
+};
+var STATUS_ORDER = ['por_contatar','contatada','orcamento_enviado','confirmada','perdida','nao_disponivel'];
+
+var st = {
+  token: localStorage.getItem('crm_token') || '',
+  view: 'leads',
+  leads: null,
+  funnel: null,
+  lead: null,
+  statusFilter: '',
+  loading: false,
+  notesTimer: null,
+};
+
+// ─── API ────────────────────────────────────────────────────────────────────
+
+function api(action, params, method, body, skipAutoLogout) {
+  var url = API + '?action=' + action;
+  if (params) Object.keys(params).forEach(function(k){ if(params[k]) url += '&'+k+'='+encodeURIComponent(params[k]); });
+  var opts = {method: method||'GET', headers:{'Authorization':'Bearer '+st.token}};
+  if (body) { opts.headers['Content-Type']='application/json'; opts.body=JSON.stringify(body); }
+  return fetch(url, opts).then(function(r){
+    if (r.status === 401) { if (!skipAutoLogout) logout(); throw new Error('unauthorized'); }
+    return r.json();
+  });
+}
+
+function loadLeads() {
+  st.loading = true; render();
+  return api('list', st.statusFilter ? {status: st.statusFilter} : {}).then(function(d){
+    st.leads = Array.isArray(d) ? d : []; st.loading = false; render();
+  }).catch(function(){ st.loading = false; render(); });
+}
+
+function loadFunnel() {
+  st.loading = true; render();
+  return api('funnel').then(function(d){
+    st.funnel = Array.isArray(d) ? d : []; st.loading = false; render();
+  }).catch(function(){ st.loading = false; render(); });
+}
+
+function loadLead(id) {
+  st.loading = true; st.lead = null; render();
+  return api('get', {id:id}).then(function(d){ st.lead = d; st.loading = false; render(); })
+    .catch(function(){ st.loading = false; render(); });
+}
+
+function updateLead(id, patch) {
+  return api('update', {id:id}, 'POST', patch);
+}
+
+// ─── Auth ────────────────────────────────────────────────────────────────────
+
+function login(pwd) {
+  st.token = pwd;
+  return api('funnel', null, null, null, true).then(function(){
+    localStorage.setItem('crm_token', st.token);
+    st.view = 'leads';
+    loadLeads();
+  }).catch(function(e){ st.token = ''; throw e; });
+}
+
+function logout() {
+  localStorage.removeItem('crm_token');
+  st.token = ''; st.leads = null; st.funnel = null; st.lead = null;
+  render();
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function fmtDate(iso) {
+  if (!iso) return '-';
+  var d = new Date(iso);
+  return d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit',year:'numeric'})
+    +' '+d.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'});
+}
+
+function fmtShort(iso) {
+  if (!iso) return '-';
+  var d = new Date(iso);
+  return d.toLocaleDateString('pt-PT',{day:'2-digit',month:'2-digit',year:'2-digit'});
+}
+
+function badge(s) {
+  var c = STATUS[s] || {label:s,color:'#888',bg:'#88888818'};
+  return '<span class="badge" style="background:'+c.bg+';color:'+c.color+'">'+c.label+'</span>';
+}
+
+// ─── Render ───────────────────────────────────────────────────────────────────
+
+var app = document.getElementById('app');
+
+function render() {
+  if (!st.token) { renderLogin(); return; }
+  switch (st.view) {
+    case 'leads':  renderLeads();  break;
+    case 'funnel': renderFunnel(); break;
+    case 'detail': renderDetail(); break;
+  }
+}
+
+// ── Login ──────────────────────────────────────────────────────────────────
+
+function renderLogin() {
+  app.innerHTML =
+    '<div id="login-screen">'+
+    '<div class="login-card">'+
+    '<div class="login-logo">3LM <span>CRM</span></div>'+
+    '<div class="login-sub">Gestão de leads</div>'+
+    '<div class="form-group"><label>Palavra-passe</label>'+
+    '<input type="password" id="pwd" placeholder="••••••••" autocomplete="current-password">'+
+    '</div>'+
+    '<div class="error-msg" id="lerr"></div>'+
+    '<button class="btn-primary" id="lbtn" style="margin-top:8px">Entrar</button>'+
+    '</div></div>';
+
+  var inp = document.getElementById('pwd');
+  var btn = document.getElementById('lbtn');
+  var err = document.getElementById('lerr');
+  inp.focus();
+
+  function go() {
+    var v = inp.value.trim(); if (!v) return;
+    btn.disabled = true; btn.textContent = 'A verificar…'; err.textContent = '';
+    login(v).catch(function(){
+      err.textContent = 'Palavra-passe incorreta.';
+      btn.disabled = false; btn.textContent = 'Entrar'; inp.select();
+    });
+  }
+  btn.addEventListener('click', go);
+  inp.addEventListener('keydown', function(e){ if(e.key==='Enter') go(); });
+}
+
+// ── Shell ──────────────────────────────────────────────────────────────────
+
+function shell(content) {
+  app.innerHTML =
+    '<div id="app-shell">'+
+    '<header class="topbar">'+
+    '<div class="topbar-brand">3LM <span>CRM</span></div>'+
+    '<nav class="topbar-nav">'+
+    '<button class="nav-btn'+(st.view!=='funnel'?' active':'')+'" id="nl">Leads</button>'+
+    '<button class="nav-btn'+(st.view==='funnel'?' active':'')+'" id="nf">Funil</button>'+
+    '</nav>'+
+    '<div class="topbar-actions">'+
+    '<button class="btn-ghost btn-sm" id="lout">Sair</button>'+
+    '</div></header>'+
+    '<main class="content">'+content+'</main>'+
+    '</div>';
+
+  document.getElementById('nl').addEventListener('click', function(){
+    st.view='leads'; if(!st.leads) loadLeads(); else render();
+  });
+  document.getElementById('nf').addEventListener('click', function(){
+    st.view='funnel'; if(!st.funnel) loadFunnel(); else render();
+  });
+  document.getElementById('lout').addEventListener('click', logout);
+}
+
+// ── Leads ─────────────────────────────────────────────────────────────────
+
+function renderLeads() {
+  var tabs = '<button class="tab-btn'+(st.statusFilter===''?' active':'')+'" data-s="">Todas</button>';
+  STATUS_ORDER.forEach(function(s){
+    tabs += '<button class="tab-btn'+(st.statusFilter===s?' active':'')+'" data-s="'+s+'">'+STATUS[s].label+'</button>';
+  });
+
+  var body;
+  if (st.loading) {
+    body = '<div class="loading"><div class="spinner"></div>A carregar…</div>';
+  } else if (!st.leads || !st.leads.length) {
+    body = '<div class="empty-state">Sem leads'+(st.statusFilter?' com este estado':'')+'.</div>';
+  } else {
+    var rows = st.leads.map(function(l){
+      return '<tr class="lr" data-id="'+esc(l.id)+'">'+
+        '<td><div class="lead-name">'+esc(l.nome)+'</div>'+
+        '<div class="lead-company">'+esc(l.empresa)+'</div></td>'+
+        '<td>'+badge(l.status)+'</td>'+
+        '<td>'+(l.utm_source?'<span class="utm-chip">'+esc(l.utm_source)+'</span>':'<span style="color:var(--muted)">-</span>')+'</td>'+
+        '<td class="lead-date">'+fmtShort(l.created_at)+'</td>'+
+        '</tr>';
+    }).join('');
+    body = '<div style="overflow-x:auto"><table class="leads-table">'+
+      '<thead><tr><th>Lead</th><th>Estado</th><th>Origem</th><th>Data</th></tr></thead>'+
+      '<tbody>'+rows+'</tbody></table></div>';
+  }
+
+  var n = st.leads ? st.leads.length : 0;
+  shell(
+    '<div class="page-header">'+
+    '<div><div class="page-title">Leads</div>'+
+    '<div class="page-sub">'+n+' resultado'+(n===1?'':'s')+'</div></div>'+
+    '<div class="status-tabs">'+tabs+'</div>'+
+    '</div>'+
+    '<div class="card">'+body+'</div>'
+  );
+
+  document.querySelectorAll('.tab-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      st.statusFilter = this.dataset.s; st.leads = null; loadLeads();
+    });
+  });
+  document.querySelectorAll('.lr').forEach(function(r){
+    r.addEventListener('click', function(){
+      st.view='detail'; loadLead(this.dataset.id);
+    });
+  });
+}
+
+// ── Funnel ────────────────────────────────────────────────────────────────
+
+function renderFunnel() {
+  if (st.loading) { shell('<div class="loading"><div class="spinner"></div>A carregar…</div>'); return; }
+
+  var funnel = st.funnel || [];
+  var total = funnel.reduce(function(s,r){ return s+r.count; }, 0);
+  var confirmed = (funnel.find(function(r){ return r.status==='confirmada'; })||{}).count||0;
+  var rate = total ? Math.round(confirmed/total*100) : 0;
+  var maxN = Math.max(1, Math.max.apply(null, funnel.map(function(r){ return r.count; })));
+
+  var cards = STATUS_ORDER.map(function(s){
+    var row = funnel.find(function(r){ return r.status===s; })||{count:0};
+    var c = STATUS[s];
+    return '<div class="funnel-card">'+
+      '<div class="funnel-count" style="color:'+c.color+'">'+row.count+'</div>'+
+      '<div class="funnel-label">'+c.label+'</div></div>';
+  }).join('');
+
+  var bars = STATUS_ORDER.map(function(s){
+    var row = funnel.find(function(r){ return r.status===s; })||{count:0};
+    var c = STATUS[s];
+    var pct = Math.round(row.count/maxN*100);
+    return '<div class="bar-row">'+
+      '<div class="bar-label">'+c.label+'</div>'+
+      '<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+c.color+'"></div></div>'+
+      '<div class="bar-count">'+row.count+'</div></div>';
+  }).join('');
+
+  shell(
+    '<div class="page-header">'+
+    '<div class="page-title">Funil de leads</div>'+
+    '<div style="color:var(--muted);font-size:13px">Conversão: <strong style="color:var(--text)">'+rate+'%</strong> ('+confirmed+' de '+total+')</div>'+
+    '</div>'+
+    '<div class="funnel-grid">'+cards+'</div>'+
+    '<div class="funnel-bars"><div class="funnel-bars-title">Distribuição por estado</div>'+bars+'</div>'
+  );
+}
+
+// ── Detail ────────────────────────────────────────────────────────────────
+
+function renderDetail() {
+  if (st.loading) { shell('<div class="loading"><div class="spinner"></div>A carregar…</div>'); return; }
+  var l = st.lead;
+  if (!l) { shell('<div class="empty-state">Lead não encontrada.</div>'); return; }
+
+  function field(lbl, val) {
+    if (!val) return '';
+    return '<div class="detail-field"><span class="df-label">'+lbl+'</span><span class="df-value">'+esc(val)+'</span></div>';
+  }
+
+  var picker = STATUS_ORDER.map(function(s){
+    var c = STATUS[s];
+    return '<button class="s-opt'+(l.status===s?' sel':'')+'" data-s="'+s+'" style="background:'+c.bg+';color:'+c.color+'">'+c.label+'</button>';
+  }).join('');
+
+  shell(
+    '<button class="detail-back" id="back">← Leads</button>'+
+    '<div class="detail-header">'+
+    '<div>'+
+    '<div class="detail-name">'+esc(l.nome)+'</div>'+
+    '<div class="detail-company">'+esc(l.empresa)+'</div>'+
+    '<div class="detail-meta">'+fmtDate(l.created_at)+' &middot; '+esc(l.produto)+'</div>'+
+    '</div>'+
+    '<div id="detail-badge">'+badge(l.status)+'</div>'+
+    '</div>'+
+
+    '<div class="detail-grid">'+
+
+    '<div class="detail-section">'+
+    '<div class="detail-section-title">Contacto</div>'+
+    field('Email',l.email)+
+    field('Telefone',l.telefone)+
+    '</div>'+
+
+    '<div class="detail-section">'+
+    '<div class="detail-section-title">Tenda</div>'+
+    field('Tamanho',l.tamanho)+
+    field('Tecido',l.tecido)+
+    field('Quantidade',l.quantidade)+
+    field('Faces',l.faces)+
+    '</div>'+
+
+    '<div class="detail-section">'+
+    '<div class="detail-section-title">Acessórios</div>'+
+    field('Paredes',l.paredes)+
+    field('Meias-paredes',l.meias_paredes)+
+    field('Janela',l.janela)+
+    field('Porta',l.porta)+
+    field('Bases',l.bases)+
+    '</div>'+
+
+    '<div class="detail-section">'+
+    '<div class="detail-section-title">Notas / Arte</div>'+
+    '<div style="font-size:13px;white-space:pre-wrap;color:var(--text)">'+esc(l.notas||'-')+'</div>'+
+    '</div>'+
+
+    '<div class="detail-section">'+
+    '<div class="detail-section-title">Origem da lead</div>'+
+    field('Fonte',l.utm_source)+
+    field('Canal',l.utm_medium)+
+    field('Campanha',l.utm_campaign)+
+    field('Conteúdo',l.utm_content)+
+    field('Termo',l.utm_term)+
+    '</div>'+
+
+    '<div class="detail-section" style="grid-column:1/-1">'+
+    '<div class="detail-section-title">Estado</div>'+
+    '<div class="status-picker">'+picker+'</div>'+
+    '</div>'+
+
+    '<div class="detail-section" style="grid-column:1/-1">'+
+    '<div class="detail-section-title">Notas internas</div>'+
+    '<textarea id="int-notes" placeholder="Adiciona notas internas…">'+esc(l.notas_internas||'')+'</textarea>'+
+    '<div class="notes-indicator" id="ni"></div>'+
+    '</div>'+
+
+    '</div>'
+  );
+
+  document.getElementById('back').addEventListener('click', function(){
+    st.view='leads'; if(!st.leads) loadLeads(); else render();
+  });
+
+  document.querySelectorAll('.s-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var ns = this.dataset.s; if (ns===l.status) return;
+      l.status = ns;
+      updateLead(l.id, {status:ns});
+      document.querySelectorAll('.s-opt').forEach(function(b){ b.classList.toggle('sel', b.dataset.s===ns); });
+      document.getElementById('detail-badge').innerHTML = badge(ns);
+      st.leads = null; // invalidate list cache
+    });
+  });
+
+  var notesEl = document.getElementById('int-notes');
+  var ni = document.getElementById('ni');
+  notesEl.addEventListener('input', function(){
+    ni.className='notes-indicator saving'; ni.textContent='A guardar…';
+    clearTimeout(st.notesTimer);
+    var val = notesEl.value;
+    st.notesTimer = setTimeout(function(){
+      updateLead(l.id, {notas_internas:val}).then(function(){
+        l.notas_internas = val;
+        ni.className='notes-indicator saved'; ni.textContent='Guardado';
+        setTimeout(function(){ ni.textContent=''; ni.className='notes-indicator'; }, 2000);
+      });
+    }, 1500);
+  });
+}
+
+// ─── Boot ─────────────────────────────────────────────────────────────────
+
+render();
+if (st.token) loadLeads();
+</script>
+</body>
+</html>
