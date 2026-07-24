@@ -25,9 +25,11 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
     $headers = [
         'apikey: '        . SUPABASE_SERVICE_KEY,
         'Authorization: Bearer ' . SUPABASE_SERVICE_KEY,
-        'Content-Type: application/json',
     ];
-    if ($httpMethod !== 'GET') $headers[] = 'Prefer: return=minimal';
+    if ($httpMethod !== 'GET') {
+        $headers[] = 'Content-Type: application/json';
+        $headers[] = 'Prefer: return=minimal';
+    }
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST  => $httpMethod,
