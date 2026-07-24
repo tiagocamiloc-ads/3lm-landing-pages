@@ -132,7 +132,7 @@ if ($httpCode === 200 && isset($result['id'])) {
         'status'        => 'por_contatar',
     ]);
 
-    $sbCh = curl_init(SUPABASE_URL . '/rest/v1/leads');
+    $sbCh = curl_init(SUPABASE_URL . '/rest/v1/leads_3lm');
     curl_setopt_array($sbCh, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST           => true,

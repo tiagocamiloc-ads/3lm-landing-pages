@@ -43,7 +43,7 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
 
 // ── GET list ──────────────────────────────────────────────────────────
 if ($method === 'GET' && $action === 'list') {
-    $qs = 'leads?select=*&order=created_at.desc';
+    $qs = 'leads_3lm?select=*&order=created_at.desc';
     if (!empty($_GET['status']))  $qs .= '&status=eq.' . urlencode($_GET['status']);
     if (!empty($_GET['produto'])) $qs .= '&produto=eq.' . urlencode($_GET['produto']);
     $r = sb_request($qs);
@@ -53,7 +53,7 @@ if ($method === 'GET' && $action === 'list') {
 
 // ── GET funnel ────────────────────────────────────────────────────────
 if ($method === 'GET' && $action === 'funnel') {
-    $qs = 'leads?select=status';
+    $qs = 'leads_3lm?select=status';
     if (!empty($_GET['produto'])) $qs .= '&produto=eq.' . urlencode($_GET['produto']);
     $r    = sb_request($qs);
     $rows = json_decode($r['body'], true) ?? [];
@@ -75,7 +75,7 @@ if ($method === 'GET' && $action === 'funnel') {
 if ($method === 'GET' && $action === 'get') {
     $id = $_GET['id'] ?? '';
     if (!$id) { http_response_code(400); echo json_encode(['error' => 'id obrigatório']); exit; }
-    $r    = sb_request('leads?id=eq.' . urlencode($id));
+    $r    = sb_request('leads_3lm?id=eq.' . urlencode($id));
     $rows = json_decode($r['body'], true) ?? [];
     echo json_encode($rows[0] ?? null);
     exit;
@@ -91,7 +91,7 @@ if ($method === 'POST' && $action === 'update') {
     $patch = [];
     foreach ($allowed as $k) { if (array_key_exists($k, $data)) $patch[$k] = $data[$k]; }
     if (empty($patch)) { echo json_encode(['ok' => true]); exit; }
-    sb_request('leads?id=eq.' . urlencode($id), 'PATCH', json_encode($patch));
+    sb_request('leads_3lm?id=eq.' . urlencode($id), 'PATCH', json_encode($patch));
     echo json_encode(['ok' => true]);
     exit;
 }
