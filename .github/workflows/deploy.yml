@@ -18,6 +18,7 @@ jobs:
           SSH_USER:             ${{ secrets.DEPLOY_USER }}
           SSH_PORT:             ${{ secrets.DEPLOY_PORT }}
           DEPLOY_PATH:          ${{ secrets.DEPLOY_PATH }}
+          RESEND_API_KEY:       ${{ secrets.RESEND_API_KEY }}
           SUPABASE_URL:         ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
           CRM_PASSWORD:         ${{ secrets.CRM_PASSWORD }}
@@ -28,8 +29,8 @@ jobs:
           ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
           # Generate config.php from secrets (never committed to repo)
-          printf '<?php\ndefine("SUPABASE_URL", "%s");\ndefine("SUPABASE_SERVICE_KEY", "%s");\ndefine("CRM_PASSWORD", "%s");\n' \
-            "$SUPABASE_URL" "$SUPABASE_SERVICE_KEY" "$CRM_PASSWORD" > config.php
+          printf '<?php\ndefine("RESEND_API_KEY", "%s");\ndefine("SUPABASE_URL", "%s");\ndefine("SUPABASE_SERVICE_KEY", "%s");\ndefine("CRM_PASSWORD", "%s");\n' \
+            "$RESEND_API_KEY" "$SUPABASE_URL" "$SUPABASE_SERVICE_KEY" "$CRM_PASSWORD" > config.php
 
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \

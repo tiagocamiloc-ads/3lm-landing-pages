@@ -1,8 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-define('RESEND_API_KEY', 're_FPfLWppB_3yUQzkDgo9PE4tKZDDqrsz9D');
-define('TO_EMAIL',       'tiagocamiloc@gmail.com');
+define('TO_EMAIL', 'tiagocamiloc@gmail.com');
 
 require_once __DIR__ . '/config.php';
 
@@ -151,6 +150,5 @@ if ($httpCode === 200 && isset($result['id'])) {
     echo json_encode(['ok' => true]);
 } else {
     http_response_code(500);
-    $resend_error = $result['message'] ?? $result['name'] ?? $response;
-    echo json_encode(['ok' => false, 'error' => 'Resend '.$httpCode.': '.$resend_error]);
+    echo json_encode(['ok' => false, 'error' => 'Erro ao enviar email. Tente novamente.']);
 }
