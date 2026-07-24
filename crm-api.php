@@ -35,7 +35,6 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
         CURLOPT_CUSTOMREQUEST  => $httpMethod,
         CURLOPT_HTTPHEADER     => $headers,
         CURLOPT_TIMEOUT        => 10,
-        CURLOPT_ENCODING       => '',
     ]);
     if ($body !== null) curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
     $resp     = curl_exec($ch);
@@ -46,13 +45,14 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
 
 // ── DEBUG ─────────────────────────────────────────────────────────────
 if ($method === 'GET' && $action === 'debug') {
+    $cols = 'id,created_at,produto,nome,email,telefone,empresa,tamanho,tecido,quantidade,faces,paredes,meias_paredes,janela,porta,bases,notas,utm_source,utm_medium,utm_campaign,utm_content,utm_term,status,notas_internas';
     $r1 = sb_request('leads_3lm?select=id,produto,status&order=created_at.desc&limit=1000');
-    $r2 = sb_request('leads_3lm?select=*&order=created_at.desc&limit=1000');
-    $r3 = sb_request('leads_3lm?select=*&order=created_at.desc&limit=1000&produto=eq.tendas-para-eventos');
+    $r2 = sb_request('leads_3lm?select=' . $cols . '&order=created_at.desc&limit=1000');
+    $d2 = json_decode($r2['body'], true);
     echo json_encode([
-        'select_limitado'  => ['code' => $r1['code'], 'count' => count(json_decode($r1['body'], true) ?? [])],
-        'select_star'      => ['code' => $r2['code'], 'count' => count(json_decode($r2['body'], true) ?? []), 'raw_len' => strlen($r2['body']), 'raw_start' => substr($r2['body'], 0, 80)],
-        'select_star_prod' => ['code' => $r3['code'], 'count' => count(json_decode($r3['body'], true) ?? [])],
+        'v' => 4,
+        'select_3cols'     => ['code' => $r1['code'], 'count' => count(json_decode($r1['body'], true) ?? [])],
+        'select_allcols'   => ['code' => $r2['code'], 'count' => count($d2 ?? []), 'raw_len' => strlen($r2['body']), 'json_error' => json_last_error_msg(), 'data' => $d2],
     ]);
     exit;
 }
