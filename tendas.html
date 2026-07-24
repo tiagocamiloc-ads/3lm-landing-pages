@@ -23,7 +23,8 @@ ul{list-style:none}
 
 .nav{background:#fff;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;height:var(--nav-h)}
 .nav-in{max-width:var(--max);margin:0 auto;padding:0 20px;height:100%;display:flex;align-items:center;gap:28px}
-.nav-logo{font-family:'Inter',system-ui,sans-serif;font-size:1.5rem;letter-spacing:.08em;color:var(--red);flex-shrink:0}
+.nav-logo{display:flex;align-items:center;flex-shrink:0}
+.ft-logo-img{filter:brightness(0) invert(1)}
 .nav-links{display:flex;gap:22px;font-size:.85rem;font-weight:500;color:var(--muted)}
 .nav-links a:hover{color:var(--text)}
 .nav-space{flex:1}
@@ -489,7 +490,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
 
 <nav class="nav">
   <div class="nav-in">
-    <a href="https://3lm.pt" class="nav-logo" aria-label="3LM"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148 48" height="30" fill="currentColor" aria-hidden="true"><text x="0" y="40" font-family="Inter,system-ui,sans-serif" font-weight="900" font-size="46" letter-spacing="-1.5">3LM*</text></svg></a>
+    <a href="https://3lm.pt" class="nav-logo"><img src="logo-transparent.png" alt="3LM" height="28"></a>
     <div class="nav-links">
       <a href="https://3lm.pt/pt/tendas-arcos-personalizados">Tendas</a>
       <a href="https://3lm.pt/pt/bandeiras-publicitarias-impressao-incluida">Bandeirolas</a>
@@ -1037,7 +1038,7 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
     </div>
     <div class="ft-cols">
       <div class="ft-brand">
-        <div class="ft-logo" aria-label="3LM"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 148 48" height="36" fill="currentColor" aria-hidden="true"><text x="0" y="40" font-family="Inter,system-ui,sans-serif" font-weight="900" font-size="46" letter-spacing="-1.5">3LM*</text></svg></div>
+        <div class="ft-logo"><img src="logo-transparent.png" alt="3LM" height="34" class="ft-logo-img"></div>
         <p class="ft-company">3LM Publicidade e Imagem, Unip. Lda</p>
         <p>Materiais de comunicação para eventos e espaços comerciais. Entrega em toda a Península Ibérica.</p>
         <br>
