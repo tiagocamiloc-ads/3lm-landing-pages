@@ -34,7 +34,7 @@ jobs:
 
           rsync -avz \
             -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT -o StrictHostKeyChecking=no" \
-            tendas.html tendas_obrigado.html send-lead.php crm-api.php crm.html config.php \
+            tendas.html tendas_obrigado.html send-lead.php crm-api.php crm.html config.php assets \
             "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
 
       - name: Verificar deploy
