@@ -45,12 +45,21 @@ function sb_request(string $path, string $httpMethod = 'GET', ?string $body = nu
     return ['code' => $httpCode, 'body' => $resp];
 }
 
+// ── Date range helper ────────────────────────────────────────────────
+function date_range_qs(): string {
+    $qs = '';
+    if (!empty($_GET['from'])) $qs .= '&created_at=gte.' . urlencode($_GET['from'] . 'T00:00:00');
+    if (!empty($_GET['to']))   $qs .= '&created_at=lte.' . urlencode($_GET['to']   . 'T23:59:59');
+    return $qs;
+}
+
 // ── GET list ──────────────────────────────────────────────────────────
 if ($method === 'GET' && $action === 'list') {
     $cols = 'id,created_at,produto,nome,email,telefone,empresa,tamanho,tecido,quantidade,faces,paredes,meias_paredes,janela,porta,bases,notas,utm_source,utm_medium,utm_campaign,utm_content,utm_term,status,notas_internas';
     $qs = 'leads_3lm?select=' . $cols . '&order=created_at.desc&limit=1000';
     if (!empty($_GET['status']))  $qs .= '&status=eq.' . urlencode($_GET['status']);
     if (!empty($_GET['produto'])) $qs .= '&produto=eq.' . urlencode($_GET['produto']);
+    $qs .= date_range_qs();
     $r    = sb_request($qs);
     $data = json_decode($r['body'], true);
     echo json_encode($data ?? []);
@@ -61,6 +70,7 @@ if ($method === 'GET' && $action === 'list') {
 if ($method === 'GET' && $action === 'funnel') {
     $qs = 'leads_3lm?select=status';
     if (!empty($_GET['produto'])) $qs .= '&produto=eq.' . urlencode($_GET['produto']);
+    $qs .= date_range_qs();
     $r    = sb_request($qs);
     $rows = json_decode($r['body'], true) ?? [];
     $counts = [];
@@ -74,6 +84,23 @@ if ($method === 'GET' && $action === 'funnel') {
         $funnel[] = ['status' => $s, 'count' => $counts[$s] ?? 0];
     }
     echo json_encode($funnel);
+    exit;
+}
+
+// ── GET clicks ────────────────────────────────────────────────────────
+if ($method === 'GET' && $action === 'clicks') {
+    $qs = 'clicks_3lm?select=tipo';
+    if (!empty($_GET['produto'])) $qs .= '&produto=eq.' . urlencode($_GET['produto']);
+    $qs .= date_range_qs();
+    $r    = sb_request($qs);
+    $rows = json_decode($r['body'], true) ?? [];
+    $counts = ['whatsapp' => 0, 'orcamento' => 0];
+    foreach ($rows as $row) {
+        $t = $row['tipo'] ?? '';
+        if (isset($counts[$t])) $counts[$t]++;
+    }
+    $counts['total'] = $counts['whatsapp'] + $counts['orcamento'];
+    echo json_encode($counts);
     exit;
 }
 

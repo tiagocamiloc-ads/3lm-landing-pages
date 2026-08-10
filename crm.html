@@ -64,6 +64,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .filter-label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;min-width:56px}
 .tab-btn{background:var(--surface2);color:var(--muted);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;border:1px solid transparent}
 .tab-btn.active{color:var(--text);border-color:var(--border)}
+.date-input{width:auto;padding:5px 10px;font-size:12px}
 
 .card{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
 .leads-table{width:100%;border-collapse:collapse}
@@ -157,9 +158,13 @@ var st = {
   view: 'leads',
   leads: null,
   funnel: null,
+  clicks: null,
+  clicksLeads: null,
   lead: null,
   statusFilter: '',
   produtoFilter: '',
+  dateFrom: '',
+  dateTo: '',
   loading: false,
 };
 
@@ -176,9 +181,16 @@ function api(action, params, method, body, skipAutoLogout) {
   });
 }
 
+function dateParams() {
+  var params = {};
+  if (st.dateFrom) params.from = st.dateFrom;
+  if (st.dateTo)   params.to   = st.dateTo;
+  return params;
+}
+
 function loadLeads() {
   st.loading = true; render();
-  var params = {};
+  var params = dateParams();
   if (st.statusFilter)  params.status  = st.statusFilter;
   if (st.produtoFilter) params.produto = st.produtoFilter;
   return api('list', params).then(function(d){
@@ -188,11 +200,24 @@ function loadLeads() {
 
 function loadFunnel() {
   st.loading = true; render();
-  var params = {};
+  var params = dateParams();
   if (st.produtoFilter) params.produto = st.produtoFilter;
   return api('funnel', params).then(function(d){
     st.funnel = Array.isArray(d) ? d : []; st.loading = false; render();
   }).catch(function(){ st.loading = false; render(); });
+}
+
+function loadClicks() {
+  st.loading = true; render();
+  var params = dateParams();
+  if (st.produtoFilter) params.produto = st.produtoFilter;
+  var clicksP = api('clicks', params);
+  var leadsP  = api('list', params);
+  return Promise.all([clicksP, leadsP]).then(function(res){
+    st.clicks = res[0] && typeof res[0] === 'object' ? res[0] : {whatsapp:0,orcamento:0,total:0};
+    st.clicksLeads = Array.isArray(res[1]) ? res[1].length : 0;
+    st.loading = false; render();
+  }).catch(function(e){ console.error('[CRM] loadClicks erro:', e); st.loading = false; render(); });
 }
 
 function loadLead(id) {
@@ -247,6 +272,21 @@ function prodLabel(p) {
   return PRODUTOS[p] || p;
 }
 
+function dateFilterRow() {
+  return '<div class="filter-row"><span class="filter-label">Data</span>'+
+    '<input type="date" id="dfrom" class="date-input" value="'+esc(st.dateFrom)+'">'+
+    '<span style="color:var(--muted);font-size:12px">até</span>'+
+    '<input type="date" id="dto" class="date-input" value="'+esc(st.dateTo)+'">'+
+    ((st.dateFrom||st.dateTo)?'<button class="btn-ghost btn-sm" id="dclear">Limpar</button>':'')+
+    '</div>';
+}
+function bindDateFilter(reloadFn) {
+  var f = document.getElementById('dfrom'), t = document.getElementById('dto'), c = document.getElementById('dclear');
+  if (f) f.addEventListener('change', function(){ st.dateFrom = f.value; reloadFn(); });
+  if (t) t.addEventListener('change', function(){ st.dateTo = t.value; reloadFn(); });
+  if (c) c.addEventListener('click', function(){ st.dateFrom=''; st.dateTo=''; reloadFn(); });
+}
+
 // ─── Render ───────────────────────────────────────────────────────────────────
 
 var app = document.getElementById('app');
@@ -256,6 +296,7 @@ function render() {
   switch (st.view) {
     case 'leads':  renderLeads();  break;
     case 'funnel': renderFunnel(); break;
+    case 'clicks': renderClicks(); break;
     case 'detail': renderDetail(); break;
   }
 }
@@ -300,8 +341,9 @@ function shell(content) {
     '<header class="topbar">'+
     '<div class="topbar-brand">3LM <span>CRM</span></div>'+
     '<nav class="topbar-nav">'+
-    '<button class="nav-btn'+(st.view!=='funnel'?' active':'')+'" id="nl">Leads</button>'+
+    '<button class="nav-btn'+((st.view==='leads'||st.view==='detail')?' active':'')+'" id="nl">Leads</button>'+
     '<button class="nav-btn'+(st.view==='funnel'?' active':'')+'" id="nf">Funil</button>'+
+    '<button class="nav-btn'+(st.view==='clicks'?' active':'')+'" id="nc">Cliques</button>'+
     '</nav>'+
     '<div class="topbar-actions"><button class="btn-ghost btn-sm" id="lout">Sair</button></div>'+
     '</header>'+
@@ -313,6 +355,9 @@ function shell(content) {
   });
   document.getElementById('nf').addEventListener('click', function(){
     st.view='funnel'; st.funnel=null; loadFunnel();
+  });
+  document.getElementById('nc').addEventListener('click', function(){
+    st.view='clicks'; st.clicks=null; loadClicks();
   });
   document.getElementById('lout').addEventListener('click', logout);
 }
@@ -359,6 +404,7 @@ function renderLeads() {
     '<div class="filter-bar">'+
     '<div class="filter-row"><span class="filter-label">Produto</span>'+prodTabs+'</div>'+
     '<div class="filter-row"><span class="filter-label">Estado</span>'+statusTabs+'</div>'+
+    dateFilterRow()+
     '</div>'+
     '<div class="card">'+body+'</div>'
   );
@@ -378,6 +424,44 @@ function renderLeads() {
       st.view='detail'; loadLead(this.dataset.id);
     });
   });
+  bindDateFilter(function(){ st.leads = null; loadLeads(); });
+}
+
+// ── Clicks ────────────────────────────────────────────────────────────────
+
+function renderClicks() {
+  if (st.loading) { shell('<div class="loading"><div class="spinner"></div>A carregar…</div>'); return; }
+
+  var c = st.clicks || {whatsapp:0, orcamento:0, total:0};
+  var leadsN = st.clicksLeads || 0;
+  var rate = c.orcamento ? Math.round(leadsN / c.orcamento * 100) : 0;
+
+  var prodTabs = Object.keys(PRODUTOS).map(function(p){
+    return '<button class="tab-btn'+(st.produtoFilter===p?' active':'')+'" data-p="'+p+'">'+PRODUTOS[p]+'</button>';
+  }).join('');
+
+  shell(
+    '<div class="page-header">'+
+    '<div class="page-title">Cliques</div>'+
+    '<div style="color:var(--muted);font-size:13px">Conclusão do formulário: <strong style="color:var(--text)">'+rate+'%</strong> ('+leadsN+' lead'+(leadsN===1?'':'s')+' de '+c.orcamento+' click'+(c.orcamento===1?'':'s')+' em "Pedir Orçamento")</div>'+
+    '</div>'+
+    '<div class="filter-bar">'+
+    '<div class="filter-row"><span class="filter-label">Produto</span>'+prodTabs+'</div>'+
+    dateFilterRow()+
+    '</div>'+
+    '<div class="funnel-grid">'+
+    '<div class="funnel-card"><div class="funnel-count" style="color:#25D366">'+c.whatsapp+'</div><div class="funnel-label">Clicks WhatsApp</div></div>'+
+    '<div class="funnel-card"><div class="funnel-count" style="color:var(--accent)">'+c.orcamento+'</div><div class="funnel-label">Clicks "Pedir Orçamento"</div></div>'+
+    '<div class="funnel-card"><div class="funnel-count">'+leadsN+'</div><div class="funnel-label">Leads submetidas</div></div>'+
+    '</div>'
+  );
+
+  document.querySelectorAll('[data-p]').forEach(function(b){
+    b.addEventListener('click', function(){
+      st.produtoFilter = this.dataset.p; st.clicks = null; loadClicks();
+    });
+  });
+  bindDateFilter(function(){ st.clicks = null; loadClicks(); });
 }
 
 // ── Funnel ────────────────────────────────────────────────────────────────

@@ -1385,7 +1385,29 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
   });
 })();
 
+function trackClick(tipo) {
+  var payload = JSON.stringify({
+    produto: 'tendas-para-eventos', tipo: tipo,
+    utm_source:   sessionStorage.getItem('utm_source')   || '',
+    utm_medium:   sessionStorage.getItem('utm_medium')   || '',
+    utm_campaign: sessionStorage.getItem('utm_campaign') || '',
+    utm_content:  sessionStorage.getItem('utm_content')  || '',
+    utm_term:     sessionStorage.getItem('utm_term')     || ''
+  });
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon('/track-click.php', new Blob([payload], {type:'application/json'}));
+  } else {
+    fetch('/track-click.php', {method:'POST', body:payload, keepalive:true});
+  }
+}
+
 function openForm(preSize, preFabric) {
+  trackClick('orcamento');
+  // Pre-select from page state
+  if (!preSize && typeof currentSize !== 'undefined') {
+    var sizeMap = {s1:'1,5 × 1,5 m', s2:'3 × 3 m', s3:'3 × 4,5 m', s4:'3 × 6 m'};
+    preSize = sizeMap[currentSize] || '';
+  }
   var modal = document.getElementById('formModal');
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1400,12 +1422,6 @@ function openForm(preSize, preFabric) {
     for (var j = 0; j < fsel.options.length; j++) {
       if (fsel.options[j].value.indexOf(preFabric) !== -1) { fsel.selectedIndex = j; break; }
     }
-  }
-  // Pre-select from page state
-  if (!preSize && typeof currentSize !== 'undefined') {
-    var sizeMap = {s1:'1,5 × 1,5 m', s2:'3 × 3 m', s3:'3 × 4,5 m', s4:'3 × 6 m'};
-    openForm(sizeMap[currentSize] || '', preFabric);
-    return;
   }
 }
 function closeForm() {
@@ -1515,6 +1531,10 @@ function loadYouTubeVideo(){
 function closeWaPopup(){
   document.getElementById('waPopup').classList.remove('open');
 }
+document.addEventListener('click', function(e){
+  var a = e.target.closest('a[href^="https://wa.me/"]');
+  if (a) trackClick('whatsapp');
+});
 </script>
 
 <!-- WA POPUP -->
