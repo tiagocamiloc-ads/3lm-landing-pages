@@ -1,0 +1,4 @@
+User-agent: *
+Crawl-delay: 10
+
+Sitemap: https://produtos.3lm.pt/sitemap.xml
