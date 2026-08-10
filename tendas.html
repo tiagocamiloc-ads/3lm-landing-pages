@@ -174,8 +174,12 @@ ul{list-style:none}
 /* VIDEO */
 .video-sec{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:64px 20px}
 .video-in{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:20px;text-align:center}
-.video-wrap{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#111;border:1px solid var(--border)}
+.video-wrap{position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/9;background:#111;border:1px solid var(--border);cursor:pointer}
 .video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;display:block}
+.video-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.video-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:72px;height:72px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;border:none;box-shadow:0 4px 18px rgba(0,0,0,.35);transition:transform .18s,background .18s}
+.video-wrap:hover .video-play{background:var(--red-dk);transform:translate(-50%,-50%) scale(1.08)}
+.video-play svg{width:26px;height:26px;fill:#fff;margin-left:3px}
 .video-h{font-family:'Inter',system-ui,sans-serif;font-size:1.75rem;font-weight:800;letter-spacing:-1px;line-height:1.15;margin-bottom:0}
 .video-desc{color:var(--muted);font-size:.95rem;line-height:1.75;margin-bottom:0}
 
@@ -783,8 +787,9 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
   <div class="video-in">
     <div class="s-eye">Veja em acção</div>
     <h2 class="video-h">As tendas 3LM no terreno</h2>
-    <div class="video-wrap">
-      <iframe src="https://www.youtube.com/embed/OFL5eZHnH_E" title="Tendas de arco 3LM em evento" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+    <div class="video-wrap" id="videoWrap" onclick="loadYouTubeVideo()" role="button" tabindex="0" aria-label="Reproduzir vídeo: As tendas 3LM no terreno" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();loadYouTubeVideo();}">
+      <img class="video-thumb" src="https://i.ytimg.com/vi/OFL5eZHnH_E/hqdefault.jpg" alt="As tendas 3LM no terreno — miniatura do vídeo" width="480" height="360" loading="lazy">
+      <button class="video-play" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
     </div>
     <p class="video-desc">Veja como as tendas se integram em feiras, eventos ao ar livre e ativações de marca. Da montagem à presença visual, o vídeo mostra o produto em contexto real.</p>
   </div>
@@ -1483,6 +1488,11 @@ function switchImg(thumb,url){
   document.getElementById('mainImg').src=url;
   document.querySelectorAll('.gal-thumb').forEach(t=>t.classList.remove('active'));
   thumb.classList.add('active');
+}
+function loadYouTubeVideo(){
+  var wrap = document.getElementById('videoWrap');
+  wrap.innerHTML = '<iframe src="https://www.youtube.com/embed/OFL5eZHnH_E?autoplay=1" title="Tendas de arco 3LM em evento" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+  wrap.onclick = null;
 }
 
 /* ── WA POPUP ── */
