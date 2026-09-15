@@ -28,6 +28,8 @@ $utm_medium   = clean($_POST['utm_medium']    ?? '');
 $utm_campaign = clean($_POST['utm_campaign']  ?? '');
 $utm_content  = clean($_POST['utm_content']   ?? '');
 $utm_term     = clean($_POST['utm_term']      ?? '');
+$gclid        = clean($_POST['gclid']         ?? '');
+$fbclid       = clean($_POST['fbclid']        ?? '');
 
 if (!$nome || !$telefone || !$empresa) {
     http_response_code(400);
@@ -73,7 +75,9 @@ $body .= "Fonte:     " . ($utm_source   ?: '-') . "\n";
 $body .= "Canal:     " . ($utm_medium   ?: '-') . "\n";
 $body .= "Campanha:  " . ($utm_campaign ?: '-') . "\n";
 $body .= "Conteudo:  " . ($utm_content  ?: '-') . "\n";
-$body .= "Termo:     " . ($utm_term     ?: '-') . "\n\n";
+$body .= "Termo:     " . ($utm_term     ?: '-') . "\n";
+$body .= "Gclid:     " . ($gclid        ?: '-') . "\n";
+$body .= "Fbclid:    " . ($fbclid       ?: '-') . "\n\n";
 
 $body .= "$sep\n";
 $body .= "Recebido em " . date('d/m/Y H:i') . " UTC\n";
@@ -128,6 +132,8 @@ if ($httpCode === 200 && isset($result['id'])) {
         'utm_campaign'  => $utm_campaign  ?: null,
         'utm_content'   => $utm_content   ?: null,
         'utm_term'      => $utm_term      ?: null,
+        'gclid'         => $gclid         ?: null,
+        'fbclid'        => $fbclid        ?: null,
         'status'        => 'por_contatar',
     ]);
 

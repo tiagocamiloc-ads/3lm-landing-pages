@@ -1370,20 +1370,23 @@ footer{background:#111827;padding:56px 20px 24px;color:rgba(255,255,255,.6)}
       <input type="hidden" name="utm_campaign" id="utm_campaign">
       <input type="hidden" name="utm_content"  id="utm_content">
       <input type="hidden" name="utm_term"     id="utm_term">
+      <input type="hidden" name="gclid"        id="gclid">
+      <input type="hidden" name="fbclid"       id="fbclid">
       <button type="submit" class="form-submit">Enviar pedido de orçamento</button>
     </form>
   </div>
 </div>
 
 <script>
-(function(){
+function fillUtmFields() {
   var p = new URLSearchParams(window.location.search);
-  ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'].forEach(function(k){
+  ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid'].forEach(function(k){
     var el = document.getElementById(k);
     if(el) el.value = p.get(k) || sessionStorage.getItem(k) || '';
     if(p.get(k)) sessionStorage.setItem(k, p.get(k));
   });
-})();
+}
+fillUtmFields();
 
 function trackClick(tipo) {
   var payload = JSON.stringify({
@@ -1403,6 +1406,7 @@ function trackClick(tipo) {
 
 function openForm(preSize, preFabric) {
   trackClick('orcamento');
+  fillUtmFields();
   // Pre-select from page state
   if (!preSize && typeof currentSize !== 'undefined') {
     var sizeMap = {s1:'1,5 × 1,5 m', s2:'3 × 3 m', s3:'3 × 4,5 m', s4:'3 × 6 m'};

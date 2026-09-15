@@ -55,7 +55,7 @@ function date_range_qs(): string {
 
 // ── GET list ──────────────────────────────────────────────────────────
 if ($method === 'GET' && $action === 'list') {
-    $cols = 'id,created_at,produto,nome,email,telefone,empresa,tamanho,tecido,quantidade,faces,paredes,meias_paredes,janela,porta,bases,notas,utm_source,utm_medium,utm_campaign,utm_content,utm_term,status,notas_internas';
+    $cols = 'id,created_at,produto,nome,email,telefone,empresa,tamanho,tecido,quantidade,faces,paredes,meias_paredes,janela,porta,bases,notas,utm_source,utm_medium,utm_campaign,utm_content,utm_term,gclid,fbclid,status,notas_internas';
     $qs = 'leads_3lm?select=' . $cols . '&order=created_at.desc&limit=1000';
     if (!empty($_GET['status']))  $qs .= '&status=eq.' . urlencode($_GET['status']);
     if (!empty($_GET['produto'])) $qs .= '&produto=eq.' . urlencode($_GET['produto']);
